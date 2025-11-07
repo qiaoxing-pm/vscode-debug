@@ -12,7 +12,6 @@ import './browser/workbench.contribution.js';
 
 //#endregion
 
-
 //#region --- workbench actions
 
 import './browser/actions/textInputActions.js';
@@ -178,7 +177,6 @@ registerSingleton(IDownloadService, DownloadService, InstantiationType.Delayed);
 registerSingleton(IOpenerService, OpenerService, InstantiationType.Delayed);
 registerSingleton(IMcpGalleryService, McpGalleryService, InstantiationType.Delayed);
 registerSingleton(IAllowedMcpServersService, AllowedMcpServersService, InstantiationType.Delayed);
-console.log("skhbasdfjkhkjasdbnxzcoxzoviuasdapofskjlf;oslkfjasd;flkasjfsdl;kfj")
 //#endregion
 
 

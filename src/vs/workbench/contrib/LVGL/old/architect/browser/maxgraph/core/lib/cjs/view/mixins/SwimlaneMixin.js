@@ -1,0 +1,202 @@
+"use strict";
+/*
+Copyright 2021-present The maxGraph project Contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SwimlaneMixin = void 0;
+const Rectangle_js_1 = __importDefault(require("../geometry/Rectangle.js"));
+const styleUtils_js_1 = require("../../util/styleUtils.js");
+const mathUtils_js_1 = require("../../util/mathUtils.js");
+const Constants_js_1 = require("../../util/Constants.js");
+const EventUtils_js_1 = require("../../util/EventUtils.js");
+// @ts-expect-error The properties of PartialGraph are defined elsewhere.
+exports.SwimlaneMixin = {
+    swimlaneSelectionEnabled: true,
+    swimlaneNesting: true,
+    swimlaneIndicatorColorAttribute: 'fillColor',
+    getSwimlane(cell = null) {
+        while (cell && !this.isSwimlane(cell)) {
+            cell = cell.getParent();
+        }
+        return cell;
+    },
+    getSwimlaneAt(x, y, parent) {
+        if (!parent) {
+            parent = this.getCurrentRoot();
+            if (!parent) {
+                parent = this.getDataModel().getRoot();
+            }
+        }
+        if (parent) {
+            const childCount = parent.getChildCount();
+            for (let i = 0; i < childCount; i += 1) {
+                const child = parent.getChildAt(i);
+                if (child) {
+                    const result = this.getSwimlaneAt(x, y, child);
+                    if (result != null) {
+                        return result;
+                    }
+                    if (child.isVisible() && this.isSwimlane(child)) {
+                        const state = this.getView().getState(child);
+                        if (state && this.intersects(state, x, y)) {
+                            return child;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    },
+    hitsSwimlaneContent(swimlane, x, y) {
+        const state = this.getView().getState(swimlane);
+        const size = this.getStartSize(swimlane);
+        if (state) {
+            const scale = this.getView().getScale();
+            x -= state.x;
+            y -= state.y;
+            if (size.width > 0 && x > 0 && x > size.width * scale) {
+                return true;
+            }
+            if (size.height > 0 && y > 0 && y > size.height * scale) {
+                return true;
+            }
+        }
+        return false;
+    },
+    getStartSize(swimlane, ignoreState = false) {
+        const result = new Rectangle_js_1.default();
+        const style = this.getCurrentCellStyle(swimlane, ignoreState);
+        const size = style.startSize ?? Constants_js_1.DEFAULT_STARTSIZE;
+        if (style.horizontal ?? true) {
+            result.height = size;
+        }
+        else {
+            result.width = size;
+        }
+        return result;
+    },
+    getSwimlaneDirection(style) {
+        const dir = style.direction ?? 'east';
+        const flipH = style.flipH;
+        const flipV = style.flipV;
+        const h = style.horizontal ?? true;
+        let n = h ? 0 : 3;
+        if (dir === 'north') {
+            n--;
+        }
+        else if (dir === 'west') {
+            n += 2;
+        }
+        else if (dir === 'south') {
+            n += 1;
+        }
+        const _mod = (0, mathUtils_js_1.mod)(n, 2);
+        if (flipH && _mod === 1) {
+            n += 2;
+        }
+        if (flipV && _mod === 0) {
+            n += 2;
+        }
+        return ['north', 'east', 'south', 'west'][(0, mathUtils_js_1.mod)(n, 4)];
+    },
+    getActualStartSize(swimlane, ignoreState = false) {
+        const result = new Rectangle_js_1.default();
+        if (this.isSwimlane(swimlane, ignoreState)) {
+            const style = this.getCurrentCellStyle(swimlane, ignoreState);
+            const size = style.startSize ?? Constants_js_1.DEFAULT_STARTSIZE;
+            const dir = this.getSwimlaneDirection(style);
+            if (dir === 'north') {
+                result.y = size;
+            }
+            else if (dir === 'west') {
+                result.x = size;
+            }
+            else if (dir === 'south') {
+                result.height = size;
+            }
+            else {
+                result.width = size;
+            }
+        }
+        return result;
+    },
+    isSwimlane(cell, ignoreState = false) {
+        if (cell && cell.getParent() !== this.getDataModel().getRoot() && !cell.isEdge()) {
+            return this.getCurrentCellStyle(cell, ignoreState).shape === 'swimlane';
+        }
+        return false;
+    },
+    isValidDropTarget(cell, cells, evt) {
+        return (cell &&
+            ((this.isSplitEnabled() && this.isSplitTarget(cell, cells, evt)) ||
+                (!cell.isEdge() &&
+                    (this.isSwimlane(cell) || (cell.getChildCount() > 0 && !cell.isCollapsed())))));
+    },
+    getDropTarget(cells, evt, cell = null, clone = false) {
+        if (!this.isSwimlaneNesting()) {
+            for (let i = 0; i < cells.length; i += 1) {
+                if (this.isSwimlane(cells[i])) {
+                    return null;
+                }
+            }
+        }
+        const pt = (0, styleUtils_js_1.convertPoint)(this.getContainer(), (0, EventUtils_js_1.getClientX)(evt), (0, EventUtils_js_1.getClientY)(evt));
+        pt.x -= this.getPanDx();
+        pt.y -= this.getPanDy();
+        const swimlane = this.getSwimlaneAt(pt.x, pt.y);
+        if (!cell) {
+            cell = swimlane;
+        }
+        else if (swimlane) {
+            // Checks if the cell is an ancestor of the swimlane
+            // under the mouse and uses the swimlane in that case
+            let tmp = swimlane.getParent();
+            while (tmp && this.isSwimlane(tmp) && tmp !== cell) {
+                tmp = tmp.getParent();
+            }
+            if (tmp === cell) {
+                cell = swimlane;
+            }
+        }
+        while (cell &&
+            !this.isValidDropTarget(cell, cells, evt) &&
+            !this.getDataModel().isLayer(cell)) {
+            cell = cell.getParent();
+        }
+        // Checks if parent is dropped into child if not cloning
+        let parentCell = cell;
+        if (!clone) {
+            while (parentCell && cells.indexOf(parentCell) < 0) {
+                parentCell = parentCell.getParent();
+            }
+        }
+        return !this.getDataModel().isLayer(cell) && !parentCell ? cell : null;
+    },
+    isSwimlaneNesting() {
+        return this.swimlaneNesting;
+    },
+    setSwimlaneNesting(value) {
+        this.swimlaneNesting = value;
+    },
+    isSwimlaneSelectionEnabled() {
+        return this.swimlaneSelectionEnabled;
+    },
+    setSwimlaneSelectionEnabled(value) {
+        this.swimlaneSelectionEnabled = value;
+    },
+};

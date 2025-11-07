@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- 圆弧：半径 60，从角度 -45° 到 135°（大弧） -->
+  <!-- 起点 ≈ (142.426,57.574) 终点 ≈ (57.574,142.426) -->
+  <path d="M142.426 57.574 A60 60 0 1 1 57.574 142.426"
+        fill="none" stroke="#006bb3" stroke-width="4" stroke-linecap="round"/>
+  <!-- 可选：画出圆心辅助点 -->
+  <circle cx="100" cy="100" r="2" fill="#006bb3"/>
+</svg>

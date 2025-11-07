@@ -11,6 +11,7 @@
 // #######################################################################
 
 
+
 //#region --- workbench common
 
 import './workbench.common.main.js';
@@ -72,23 +73,12 @@ import '../platform/extensionResourceLoader/browser/extensionResourceLoaderServi
 import './services/auxiliaryWindow/browser/auxiliaryWindowService.js';
 import './services/browserElements/browser/webBrowserElementsService.js';
 
-// architect
-// import './contrib/architect/browser/architect.contribution.js';
-// import './contrib/LVGL/animation/browser/animation.contribution.js';
 
-import './contrib/LVGL/animation/browser/animation.contribution.js';
-import './contrib/LVGL/architect/browser/architect.contribution.js';
-import './contrib/LVGL/createNewFont/browser/createNewFont.contribution.js';
-import './contrib/LVGL/hierachy/browser/hierachy.contribution.js';
-import './contrib/LVGL/propWidget/browser/propWidget.contribution.js';
-import './contrib/LVGL/structAndVarRelationIntegrate/browser/structAndVarRelationIntegrate.contribution.js';
-import './contrib/LVGL/themes/browser/themes.contribution.js';
-import './contrib/LVGL/widgetList/browser/widgetList.contribution.js';
-
-
-
-
-
+// LVGL 相关模块
+import './contrib/LVGL/api/eventBus.js';
+import './contrib/LVGL/module/hierachy/browser/hierachy.contribution.js';
+import './contrib/LVGL/module/structAndVarRelationIntegrate/browser/structAndVarRelationIntegrate.contribution.js';
+import './contrib/LVGL/module/widgetList/browser/widgetList.contribution.js';
 
 import { InstantiationType, registerSingleton } from '../platform/instantiation/common/extensions.js';
 import { IAccessibilityService } from '../platform/accessibility/common/accessibility.js';
@@ -243,7 +233,6 @@ if ((globalThis as any).__VSCODE_WEB_ESM_PROMISE) {
 	// eslint-disable-next-line local/code-no-any-casts
 	delete (globalThis as any).__VSCODE_WEB_ESM_PROMISE;
 }
-console.log("skhbasdfjkhkjasdbnxzcoxzoviuasdapofskjlf;oslkfjasd;flkasjfsdl;kfj")
 
 export {
 

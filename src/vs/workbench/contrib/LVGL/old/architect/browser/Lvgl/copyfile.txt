@@ -1,0 +1,30 @@
+@echo off
+setlocal enabledelayedexpansion
+
+set wasm=lvgl_mes.wasm
+set js=lvgl.js
+
+REM 指定目标目录
+set wasmDir=I:\workplace\drawsys_v5\public
+set jsDir=I:\workplace\drawsys_v5\src\lvgl\package\wasm
+
+echo Checking for files to delete...
+
+REM 检查 wasm 文件
+if exist "%wasmDir%\%wasm%" (
+    echo Found %wasm% in %wasmDir%, deleting...
+    del "%wasmDir%\%wasm%"
+) else (
+    echo %wasm% not found in %wasmDir%.
+)
+
+REM 检查 js 文件
+if exist "%jsDir%\%js%" (
+    echo Found %js% in %jsDir%, deleting...
+    del "%jsDir%\%js%"
+) else (
+    echo %js% not found in %jsDir%.
+)
+
+echo Done.
+pause

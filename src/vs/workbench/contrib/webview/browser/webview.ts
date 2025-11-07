@@ -398,3 +398,4 @@ export class ExtensionKeyedWebviewOriginStore {
 		return this._store.getOrigin(viewType, extId.value);
 	}
 }
+

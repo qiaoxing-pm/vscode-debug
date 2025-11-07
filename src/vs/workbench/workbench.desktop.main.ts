@@ -16,7 +16,6 @@ import './workbench.common.main.js';
 
 //#endregion
 
-
 //#region --- workbench (desktop main)
 
 import './electron-browser/desktop.main.js';
@@ -186,7 +185,4 @@ import './contrib/mcp/electron-browser/mcp.contribution.js';
 import './contrib/policyExport/electron-browser/policyExport.contribution.js';
 
 //#endregion
-
-console.log("skhbasdfjkhkjasdbnxzcoxzoviuasdapofskjlf;oslkfjasd;flkasjfsdl;kfj")
-
 export { main } from './electron-browser/desktop.main.js';

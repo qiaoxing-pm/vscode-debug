@@ -105,4 +105,3 @@
 		}
 	);
 })();
-console.log("skhbasdfjkhkjasdbnxzcoxzoviuasdapofskjlf;oslkfjasd;flkasjfsdl;kfj")

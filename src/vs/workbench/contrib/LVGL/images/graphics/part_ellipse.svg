@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- 椭圆弧：rx=80, ry=40，起点 ≈ (169.282,80)，终点 ≈ (60,134.641)，弧程 < 180° -->
+  <path d="M169.282 80 A80 40 0 0 1 60 134.641"
+        fill="none" stroke="#8a2be2" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#eee" stroke-width="0.5"/>
+</svg>
