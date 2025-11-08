@@ -5,6 +5,7 @@
 
 import '../../../../base/browser/ui/codicons/codiconStyles.js'; // The codicon symbol styles are defined here and must be loaded
 import '../../../contrib/symbolIcons/browser/symbolIcons.js'; // The codicon symbol colors are defined here and must be loaded to get colors
+import '../../../../base/browser/ui/lvgl/lvglStyle.js'
 import { AbstractGotoSymbolQuickAccessProvider } from '../../../contrib/quickAccess/browser/gotoSymbolQuickAccess.js';
 import { Registry } from '../../../../platform/registry/common/platform.js';
 import { IQuickAccessRegistry, Extensions } from '../../../../platform/quickinput/common/quickAccess.js';

@@ -17,7 +17,7 @@ import {
 import { IOpenerService } from "../../../../../../platform/opener/common/opener.js";
 import { IHoverService } from "../../../../../../platform/hover/browser/hover.js";
 import { WorkbenchAsyncDataTree } from "../../../../../../platform/list/browser/listService.js";
-import { NodeDelegate, NodeRenderer, HierarchyTreeDataSource, type Node } from "../../../components/Tree.js";
+import { NodeDelegate, NodeRenderer, HierarchyTreeDataSource, type Node } from "../api/class.js";
 import { Action } from '../../../../../../base/common/actions.js';
 
 export class HierachyView extends ViewPane {

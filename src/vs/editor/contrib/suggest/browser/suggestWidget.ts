@@ -6,6 +6,7 @@
 import * as dom from '../../../../base/browser/dom.js';
 import { IKeyboardEvent } from '../../../../base/browser/keyboardEvent.js';
 import '../../../../base/browser/ui/codicons/codiconStyles.js'; // The codicon symbol styles are defined here and must be loaded
+import '../../../../base/browser/ui/lvgl/lvglStyle.js'
 import { IListEvent, IListGestureEvent, IListMouseEvent } from '../../../../base/browser/ui/list/list.js';
 import { List } from '../../../../base/browser/ui/list/listWidget.js';
 import { CancelablePromise, createCancelablePromise, disposableTimeout, TimeoutTimer } from '../../../../base/common/async.js';

@@ -1,8 +1,7 @@
-import { IListElementRenderDetails, IListRenderer, IListVirtualDelegate } from '../../../../base/browser/ui/list/list.js';
-import { ITreeRenderer, ITreeElement } from '../../../../base/browser/ui/tree/tree.js';
-import { IAsyncDataSource } from '../../../../base/browser/ui/tree/tree.js';
-import { IChatCollapsibleListItem } from '../../chat/browser/chatContentParts/chatReferencesContentPart.js';
-import { hierachyTreeData, structAndVarRelationIntegrateTreeData } from '../api/constant.js';
+import { IListVirtualDelegate } from '../../../../../../base/browser/ui/list/list.js';
+import { ITreeRenderer, ITreeElement } from '../../../../../../base/browser/ui/tree/tree.js';
+import { IAsyncDataSource } from '../../../../../../base/browser/ui/tree/tree.js';
+import { hierachyTreeData } from './constant.js';
 
 
 interface Node {
@@ -28,7 +27,7 @@ class NodeRenderer implements ITreeRenderer<Node, never, { label: HTMLSpanElemen
 	getTwistie(container: HTMLElement) {
 		const nodeElement = container.closest('.monaco-tl-row');
 		const twistieElement = nodeElement?.querySelector('.monaco-tl-twistie');
-		return twistieElement
+		return twistieElement;
 	}
 
 	getTwistieClassTemplate(iconClass: string) {
@@ -39,7 +38,6 @@ class NodeRenderer implements ITreeRenderer<Node, never, { label: HTMLSpanElemen
 		data.label.textContent = element.element.label;
 		this.renderTwistie(element.element, data.twistie);
 	}
-
 
 	renderTwistie(element: Node, twistieElement: HTMLElement): boolean {
 		switch (element.type) {
@@ -53,10 +51,9 @@ class NodeRenderer implements ITreeRenderer<Node, never, { label: HTMLSpanElemen
 		return true;
 	}
 
-
-
 	disposeTemplate() { }
 }
+
 class HierarchyTreeDataSource implements IAsyncDataSource<null, Node> {
 
 	getChildren(element: Node | null): Iterable<Node> | Promise<Iterable<Node>> {
@@ -78,78 +75,10 @@ class HierarchyTreeDataSource implements IAsyncDataSource<null, Node> {
 }
 
 
-class StructAndVarRelationIntegrateSource implements IAsyncDataSource<null, Node> {
-
-	getChildren(element: Node | null): Iterable<Node> | Promise<Iterable<Node>> {
-		if (element === null) {
-			return structAndVarRelationIntegrateTreeData;
-		}
-
-		return element.children ?? [];
-	}
-
-	hasChildren(element: Node | null): boolean {
-		if (element === null) {
-			return true;
-		}
-
-		return !!element.children?.length;
-	}
-
-
-}
-
-
-
-
-class CollapsedNodeDelegate {
-	getHeight(element: Node) { return 24; }
-	getTemplateId(element: Node) { return 'FlatCollapsibleListRenderer'; }
-}
-
-
-class FlatCollapsibleListRenderer implements IListRenderer<Node, any> {
-	templateId = 'FlatCollapsibleListRenderer';
-
-	renderTemplate(container: HTMLElement) {
-		const label = document.createElement('span');
-		label.style.display = 'block';
-		container.appendChild(label);
-		return { label };
-	}
-	renderElement(element: Node, index: number, templateData: any) {
-		templateData.label.textContent = element.label;
-	}
-
-	disposeTemplate(templateData: any): void {
-		console.log(templateData);
-	}
-
-	canRender(element: Node): boolean {
-		return true; // 或根据 element.type 判断
-	}
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export {
-	StructAndVarRelationIntegrateSource,
-	FlatCollapsibleListRenderer,
 	HierarchyTreeDataSource,
-	CollapsedNodeDelegate,
 	NodeDelegate,
 	NodeRenderer,
-	type Node,
-}
+	Node,
+};

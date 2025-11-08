@@ -17,8 +17,10 @@ import {
 import { IOpenerService } from "../../../../../../platform/opener/common/opener.js";
 import { IHoverService } from "../../../../../../platform/hover/browser/hover.js";
 import { WorkbenchAsyncDataTree } from "../../../../../../platform/list/browser/listService.js";
-import { NodeDelegate, NodeRenderer, StructAndVarRelationIntegrateSource, type Node } from "../../../components/Tree.js";
-import { Action } from '../../../../../../base/common/actions.js';
+import { NodeDelegate, NodeRenderer, StructAndVarRelationIntegrateSource } from "../api/class.js";
+import { type Node } from '../api/type.js';
+import { contextMenuMap } from '../api/constant.js';
+import { createContextMenu, rename } from '../api/util.js';
 
 export class StructAndVarRelationIntegrateView extends ViewPane {
 	constructor(
@@ -70,7 +72,7 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 			[renderer],
 			dataSource,
 			{
-				identityProvider: { getId: node => node.label },
+				identityProvider: { getId: node => node.id },
 				accessibilityProvider: {
 					getAriaLabel: node => node.label,
 					getWidgetAriaLabel: () => "StructAndVarRelationIntegrate Tree",
@@ -78,34 +80,30 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 			}
 		);
 
-
 		this.tree.setInput(null);
 
-		// 事件逻辑
 		this.tree.onContextMenu(({ element, anchor }) => {
-			if (!element) return;
-			const node = element;
-
-			console.log(node)
-
-			this.contextMenuService.showContextMenu({
-				getAnchor: () => anchor,
-				getActions: () => {
-					return [
-						new Action('renameNode', `重命名`, undefined, true, () => {
-							console.log('重命名', node);
-							return Promise.resolve();
-						}),
-						new Action('deleteNode', `删除`, undefined, true, () => {
-							console.log('删除', node);
-							return Promise.resolve();
-						})
-					]
+			if (!element || !element?.contextMenu) return;
+			if (element.contextMenu) {
+				const contextMenuData = contextMenuMap.get(element.contextMenu);
+				if (contextMenuData) {
+					this.contextMenuService.showContextMenu({
+						getAnchor: () => anchor,
+						getActions: () => {
+							return createContextMenu(contextMenuData, element, this.tree);
+						}
+					});
 				}
-			});
+			}
 		});
-	}
 
+		this.tree.onKeyDown(e => {
+			console.log(e, this.tree.getFocus())
+			if (e.key === "F2") {
+				rename(this.tree.getFocus()[0])
+			}
+		})
+	}
 
 	override layoutBody(height: number, width: number): void {
 		super.layoutBody(height, width);
