@@ -1,0 +1,21 @@
+// 通用操作常量
+const commonOperationConstants = {
+  RESOURCE_OPTION: "RESOURCE_OPTION",
+
+  // 文件操作
+  SHOW_INEXPLORER: "SHOW_INEXPLORER",
+  ADD_TOCHAT: "ADD_TOCHAT",
+  COPY_PATH_ADD_TOCHAT: "COPY_PATH_ADD_TOCHAT",
+  CUT: "CUT",
+  COPY: "COPY",
+  PASTE: "PASTE",
+  COPY_PATH: "COPY_PATH",
+  COPY_RELATIVE_PATH: "COPY_RELATIVE_PATH",
+  RENAME: "RENAME",
+  DELETE: "DELETE",
+
+  // Git相关
+  GIT_FILE_HISTORY: "GIT_FILE_HISTORY",
+};
+
+export default commonOperationConstants;

@@ -18,9 +18,11 @@ import { IOpenerService } from "../../../../../../platform/opener/common/opener.
 import { IHoverService } from "../../../../../../platform/hover/browser/hover.js";
 import { WorkbenchAsyncDataTree } from "../../../../../../platform/list/browser/listService.js";
 import { NodeDelegate, NodeRenderer, StructAndVarRelationIntegrateSource } from "../api/class.js";
-import { type Node } from '../api/type.js';
+import type { StructAndVarRelationTreeNodeBase } from "../../../type/type.js"
 import { contextMenuMap } from '../api/constant.js';
 import { createContextMenu, rename } from '../api/util.js';
+import { IEditorService } from '../../../../../services/editor/common/editorService.js';
+import { StructAndVarRelationIntegrateContent } from './editor/structAndVarRelationIntegrateEditorContent.js';
 
 export class StructAndVarRelationIntegrateView extends ViewPane {
 	constructor(
@@ -49,7 +51,25 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		);
 	}
 
-	private tree!: WorkbenchAsyncDataTree<null, Node>; // 根节点是 null，节点类型是 Node
+
+
+
+	createBtn(str: string): HTMLElement {
+		const btn = document.createElement('button');
+		btn.textContent = str;
+		btn.addEventListener('click', async () => {
+			const editorService = this.instantiationService.invokeFunction(accessor => accessor.get(IEditorService));
+			const input = this.instantiationService.createInstance(StructAndVarRelationIntegrateContent, "ProtocolB");
+			editorService.openEditor(input);
+		});
+
+		return btn;
+	}
+
+
+
+
+	private tree!: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase>; // 根节点是 null，节点类型是 StructAndVarRelationTreeNodeBase
 
 	protected override renderBody(container: HTMLElement): void {
 		container.classList.add('structAndVarRelationIntegrate-view');
@@ -59,13 +79,15 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		treeContainer.style.display = 'flex';
 		treeContainer.style.minHeight = '0';
 		container.appendChild(treeContainer);
+		const asdf = this.createBtn("test");
+		container.appendChild(asdf)
 
 		const delegate = new NodeDelegate();
 		const renderer = new NodeRenderer();
 		const dataSource = new StructAndVarRelationIntegrateSource();
 
 		this.tree = this.instantiationService.createInstance(
-			WorkbenchAsyncDataTree<null, Node>,
+			WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase>,
 			'StructAndVarRelationIntegrateViewTree',
 			treeContainer,
 			delegate,
@@ -74,7 +96,7 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 			{
 				identityProvider: { getId: node => node.id },
 				accessibilityProvider: {
-					getAriaLabel: node => node.label,
+					getAriaLabel: node => node.name,
 					getWidgetAriaLabel: () => "StructAndVarRelationIntegrate Tree",
 				},
 			}
@@ -83,9 +105,10 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		this.tree.setInput(null);
 
 		this.tree.onContextMenu(({ element, anchor }) => {
-			if (!element || !element?.contextMenu) return;
-			if (element.contextMenu) {
-				const contextMenuData = contextMenuMap.get(element.contextMenu);
+			console.log("sakljaslh", element)
+			if (!element || !element?.optionType) return;
+			if (element.optionType) {
+				const contextMenuData = contextMenuMap.get(element.optionType);
 				if (contextMenuData) {
 					this.contextMenuService.showContextMenu({
 						getAnchor: () => anchor,
@@ -100,6 +123,7 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		this.tree.onKeyDown(e => {
 			console.log(e, this.tree.getFocus())
 			if (e.key === "F2") {
+				console.log(e, this.tree.getFocus())
 				rename(this.tree.getFocus()[0])
 			}
 		})

@@ -1,80 +1,36 @@
 import { WorkbenchAsyncDataTree } from '../../../../../../platform/list/browser/listService.js';
-import { structAndVarRelationIntegrateConstant } from '../../../api/static.js';
-import type { Node, contextMenuType } from './type.js';
-import { createNode, enhanceTreeData, deleteNode } from './util.js';
+import { structAndVarRelationIntegrateConstant } from '../../../api_demo/static.js';
+import type { contextMenuType } from './type.js';
+import type { StructAndVarRelationTreeNodeBase } from "../../../type/type.js"
+import { createNewNode } from './util.js';
+import api from "../../../api/index.js"
+
+const oldData = api.structAndVarRelationIntegrate.getData();
+
+// const oldData = [
+// 	{
+// 		"name": "Variable Management",
+// 		"type": "folder",
+// 		"optionType": structAndVarRelationIntegrateConstant.VARIABLE_MANAGEMENT,
+// 		"children": [
+// 			{
+// 				"name": "内部变量",
+// 				"type": "folder",
+// 				"optionType": structAndVarRelationIntegrateConstant.INTERNAL_VARIABLE,
+// 			},
+// 		]
+// 	},
+// 	{
+// 		"name": "Structural Management",
+// 		"type": "folder",
+// 		"optionType": structAndVarRelationIntegrateConstant.STRUCTURAL_MANAGEMENT,
+// 	}
+// ];
 
 
-const oldData = [
-	{
-		"label": "Variable Management",
-		"type": "folder",
-		"contextMenu": structAndVarRelationIntegrateConstant.VARIABLE_MANAGEMENT,
-		"children": [
-			{
-				"label": "内部变量",
-				"type": "folder",
-				"contextMenu": structAndVarRelationIntegrateConstant.INTERNAL_VARIABLE,
-				// "children": [
-				// 	{
-				// 		"label": "变量组",
-				// 		"type": "folder",
-				// 		"contextMenu": structAndVarRelationIntegrateConstant.VARIABLE_GROUP,
-				// 		"children": [
-				// 			{
-				// 				"label": "变量",
-				// 				"type": "file",
-				// 				"contextMenu": structAndVarRelationIntegrateConstant.VARIABLE,
-				// 			}
-				// 		]
-				// 	}
-				// ]
-			},
-			// {
-			// 	"label": "Modbus TCPIP",
-			// 	"type": "folder",
-			// 	"contextMenu": structAndVarRelationIntegrateConstant.MODBUS_TCPIP,
-			// 	"children": [
-			// 		{
-			// 			"label": "Modbus TCPIP Groups",
-			// 			"type": 'folder',
-			// 			"contextMenu": structAndVarRelationIntegrateConstant.MODBUS_TCPIP_GROUPS,
-			// 			"children": [
-			// 				{
-			// 					"label": "Modbus TCPIP Connect",
-			// 					"type": "file",
-			// 					"contextMenu": structAndVarRelationIntegrateConstant.MODBUS_TCPIP_CONNECT,
-			// 				}
-			// 			]
-			// 		}
-			// 	]
-			// }
-		]
-	},
-	{
-		"label": "Structural Management",
-		"type": "folder",
-		"contextMenu": structAndVarRelationIntegrateConstant.STRUCTURAL_MANAGEMENT,
-		// "children": [
-		// 	{
-		// 		"label": "structural",
-		// 		"type": "folder",
-		// 		"contextMenu": structAndVarRelationIntegrateConstant.STRUCTURAL,
-		// 		"children": [
-		// 			{
-		// 				"label": "structural member",
-		// 				"type": 'file',
-		// 				"contextMenu": structAndVarRelationIntegrateConstant.STRUCTURAL_MEMBER,
-		// 			}
-		// 		]
-		// 	}
-		// ]
-	}
-];
+export const structAndVarRelationIntegrateTreeData: Array<StructAndVarRelationTreeNodeBase> = oldData;
 
-
-export const structAndVarRelationIntegrateTreeData: Array<Node> = enhanceTreeData(oldData as Array<Omit<Node, 'id' | 'parent'>>)
-
-export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Array<contextMenuType>>([
+export const contextMenuMapOld = new Map<string, Array<contextMenuType>>([
 	[
 		structAndVarRelationIntegrateConstant.VARIABLE_MANAGEMENT,
 		[
@@ -85,8 +41,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 					{
 						label: "新建 Modbux TCPIP",
 						id: "create_new_modbux_tcpip",
-						action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-							createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.MODBUS_TCPIP);
+						action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+							// createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.MODBUS_TCPIP);
 						}
 					},
 				]
@@ -99,8 +55,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "新建变量组",
 				id: "create_new_group",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.VARIABLE_GROUP);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.VARIABLE_GROUP);
 				}
 			}
 		]
@@ -111,8 +67,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "新建变量",
 				id: "create new variable",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					createNode(node, tree, 'file', structAndVarRelationIntegrateConstant.VARIABLE);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// createNode(node, tree, 'file', structAndVarRelationIntegrateConstant.VARIABLE);
 				}
 			},
 			{
@@ -122,8 +78,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "删除",
 				id: "delete",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					deleteNode(node, tree);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// deleteNode(node, tree);
 				}
 			}
 		]
@@ -138,8 +94,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "删除",
 				id: "delete",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					deleteNode(node, tree);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// deleteNode(node, tree);
 				}
 			}
 		]
@@ -150,15 +106,15 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "新建 TCPIP 组",
 				id: "create tcpip group",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.MODBUS_TCPIP_GROUPS);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.MODBUS_TCPIP_GROUPS);
 				}
 			},
 			{
 				label: "删除",
 				id: "delete",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					deleteNode(node, tree);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// deleteNode(node, tree);
 				}
 			}
 		]
@@ -169,15 +125,15 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "新建连接",
 				id: 'create connection',
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					createNode(node, tree, 'file', structAndVarRelationIntegrateConstant.MODBUS_TCPIP_CONNECT);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// createNode(node, tree, 'file', structAndVarRelationIntegrateConstant.MODBUS_TCPIP_CONNECT);
 				}
 			},
 			{
 				label: "删除",
 				id: "delete",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					deleteNode(node, tree);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// deleteNode(node, tree);
 				}
 			}
 		]
@@ -192,8 +148,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "删除",
 				id: "delete",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					deleteNode(node, tree);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// // deleteNode(node, tree);
 				}
 			}
 		]
@@ -204,8 +160,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: '新建结构群',
 				id: 'create_new_structure_management',
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.STRUCTURAL);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.STRUCTURAL);
 				}
 			}
 		]
@@ -216,8 +172,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "新建结构体",
 				id: 'create_new_structure_element',
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					createNode(node, tree, 'file', structAndVarRelationIntegrateConstant.STRUCTURAL_MEMBER);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// createNode(node, tree, 'file', structAndVarRelationIntegrateConstant.STRUCTURAL_MEMBER);
 				}
 			},
 			{
@@ -227,8 +183,8 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "删除",
 				id: "delete",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
-					deleteNode(node, tree);
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// deleteNode(node, tree);
 				}
 			}
 		]
@@ -243,11 +199,61 @@ export const contextMenuMap = new Map<structAndVarRelationIntegrateConstant, Arr
 			{
 				label: "删除",
 				id: "delete",
-				action: (node: Node, tree: WorkbenchAsyncDataTree<null, Node, void>) => {
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
 					console.log("node", node)
-					deleteNode(node, tree);
+					// deleteNode(node, tree);
 				}
 			}
 		]
 	]
 ]);
+
+
+export const contextMenuMap = new Map<string, Array<contextMenuType>>();
+
+
+// 一级节点 变量管理
+contextMenuMap.set(api.constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_VARIABLE, [
+	{
+		label: "新建",
+		id: 'create_new',
+		children: [
+			{
+				label: "新建 Modbux TCPIP",
+				id: "create_new_modbux_tcpip",
+				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+					// createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.MODBUS_TCPIP);
+				}
+			},
+		]
+	},
+])
+
+// 二级节点 内部管理
+contextMenuMap.set(api.constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_INTERNAL_VARIABLE,
+	[
+		{
+			label: "新建变量组",
+			id: "create_new_group",
+			action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+				// // createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.VARIABLE_GROUP);
+				createNewNode(api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_INTERNAL_VARIABLE_GROUP, node, tree)
+			}
+		}
+	]
+)
+
+// 一级节点 结构管理
+contextMenuMap.set(api.constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_STRUCT,
+	[
+		{
+			label: '新建结构群',
+			id: 'create_new_structure_management',
+			action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
+				// createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.STRUCTURAL);
+			}
+		}
+	]
+)
+
+

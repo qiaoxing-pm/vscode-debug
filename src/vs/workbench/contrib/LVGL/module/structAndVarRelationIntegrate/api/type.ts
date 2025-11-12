@@ -1,14 +1,15 @@
-import { structAndVarRelationIntegrateConstant } from '../../../api/static.js';
+import { structAndVarRelationIntegrateConstant } from '../../../api_demo/static.js';
 
-export interface Node {
-	label: string;
-	id: string;
-	parent: Node | null;
-	type: 'folder' | 'file' | 'tsx';
-	contextMenu?: structAndVarRelationIntegrateConstant;
-	domNode?: HTMLElement;
-	children?: Node[];
-}
+// export interface Node {
+// 	name: string;
+// 	id: string;
+// 	parent: Node | null;
+// 	type: 'folder' | 'file' | 'tsx';
+// 	optionType?: structAndVarRelationIntegrateConstant;
+// 	domNode?: HTMLElement;
+// 	children?: Node[];
+// 	[key: string]: any;
+// }
 
 
 export interface contextMenuType {

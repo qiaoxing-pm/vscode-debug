@@ -9,9 +9,13 @@ import { localize, localize2 } from '../../../../../../nls.js';
 import { SyncDescriptor } from '../../../../../../platform/instantiation/common/descriptors.js';
 import { Registry } from '../../../../../../platform/registry/common/platform.js';
 import { registerIcon } from '../../../../../../platform/theme/common/iconRegistry.js';
+import { EditorPaneDescriptor, IEditorPaneRegistry } from '../../../../../browser/editor.js';
+import { EditorExtensions } from '../../../../../common/editor.js';
 import { Extensions, IViewsRegistry } from '../../../../../common/views.js';
 import { VIEW_CONTAINER } from '../../../../files/browser/explorerViewlet.js';
 import { StructAndVarRelationIntegrateView } from './structAndVarRelationIntegrateView.js';
+import { StructAndVarRelationIntegrateEditor } from './editor/structAndVarRelationIntegrateEditor.js'
+import { StructAndVarRelationIntegrateContent } from './editor/structAndVarRelationIntegrateEditorContent.js';
 
 
 const structAndVarRelationIntegrateViewIcon = registerIcon(
@@ -37,3 +41,14 @@ Registry.as<IViewsRegistry>(Extensions.ViewsRegistry).registerViews(
 	],
 	VIEW_CONTAINER
 );
+
+Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
+	EditorPaneDescriptor.create(
+		StructAndVarRelationIntegrateEditor,
+		'1123333',
+		'打开视图',
+	),
+	[
+		new SyncDescriptor(StructAndVarRelationIntegrateContent)
+	]
+)

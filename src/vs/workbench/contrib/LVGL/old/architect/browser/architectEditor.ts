@@ -29,36 +29,6 @@ export class ArchitectEditor extends EditorPane {
 		super('workbench.editor.architect', group, telemetryService, themeService, storageService);
 	}
 
-	// protected override createEditor(parent: HTMLElement): void {
-	// 	const container = document.createElement('div');
-	// 	container.className = 'architect-editor';
-	// 	container.style.width = '100%';
-	// 	container.style.height = '100%';
-	// 	container.style.overflow = 'auto';
-
-	// 	HttpClientModule.getProtocolList().then((res) => {
-	// 		res.json().then((ress) => {
-	// 			if (ress && ress[0]) {
-	// 				HttpClientModule.getProtocol(ress[0]).then((resss) => {
-	// 					resss.text().then((eaa) => {
-	// 						const container2 = document.createElement('div');
-	// 						container2.className = 'architect-editor-plc-xml';
-	// 						container2.style.width = '100%';
-	// 						container2.style.height = '100%';
-	// 						container2.style.overflow = 'auto';
-	// 						container2.contentEditable = true;
-	// 						container2.innerText = eaa;
-
-	// 						container.appendChild(container2);
-	// 					})
-	// 				})
-	// 			}
-	// 		})
-	// 	})
-	// 	parent.appendChild(container);
-	// }
-
-
 	protected override async createEditor(parent: HTMLElement): Promise<void> {
 		try {
 			const res = await HttpClientModule.getProtocolList();
