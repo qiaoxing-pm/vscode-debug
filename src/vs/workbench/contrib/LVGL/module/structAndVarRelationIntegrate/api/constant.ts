@@ -1,9 +1,12 @@
 import { WorkbenchAsyncDataTree } from '../../../../../../platform/list/browser/listService.js';
 import { structAndVarRelationIntegrateConstant } from '../../../api_demo/static.js';
 import type { contextMenuType } from './type.js';
-import type { StructAndVarRelationTreeNodeBase } from "../../../type/type.js"
-import { createNewNode } from './util.js';
+import type { StructAndVarRelationTreeNodeBase, vscodeApiType } from "../../../type/type.js"
+import { contextMenuAction, createNewNode } from './util.js';
 import api from "../../../api/index.js"
+// import { INotification } from '../../../../../../base/browser/dom.js';
+import { INotificationService } from '../../../../../../platform/notification/common/notification.js';
+
 
 const oldData = api.structAndVarRelationIntegrate.getData();
 
@@ -212,48 +215,100 @@ export const contextMenuMapOld = new Map<string, Array<contextMenuType>>([
 export const contextMenuMap = new Map<string, Array<contextMenuType>>();
 
 
-// 一级节点 变量管理
-contextMenuMap.set(api.constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_VARIABLE, [
+// 一级节点 变量管理的右键菜单栏
+contextMenuMap.set(api.constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_VARIABLE, [
 	{
 		label: "新建",
-		id: 'create_new',
+		id: crypto.randomUUID(),
 		children: [
 			{
-				label: "新建 Modbux TCPIP",
-				id: "create_new_modbux_tcpip",
-				action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
-					// createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.MODBUS_TCPIP);
+				label: "新建 Modbus TCPIP",
+				id: api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_MODBUS_TCPIP,
+				action: (...arg) => {
+					contextMenuAction(...arg, api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_MODBUS_TCPIP);
 				}
 			},
 		]
 	},
-])
+]);
 
-// 二级节点 内部管理
+// 二级节点 内部管理的右键菜单栏
 contextMenuMap.set(api.constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_INTERNAL_VARIABLE,
 	[
 		{
-			label: "新建变量组",
-			id: "create_new_group",
-			action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
-				// // createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.VARIABLE_GROUP);
-				createNewNode(api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_INTERNAL_VARIABLE_GROUP, node, tree)
+			label: "新建内部变量组",
+			id: api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_INTERNAL_VARIABLE_GROUP,
+			action: (...arg) => {
+				contextMenuAction(...arg, api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_INTERNAL_VARIABLE_GROUP);
+			}
+		}
+	]
+);
+
+// 三级节点 内部变量组的右键菜单栏
+contextMenuMap.set(api.constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_INTERNAL_VARIABLE_GROUP,
+	[
+		{
+			label: "新建内部变量元素",
+			id: api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_INTERNAL_VARIABLE_ITEM,
+			action: (...arg) => {
+				contextMenuAction(...arg, api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_INTERNAL_VARIABLE_ITEM);
 			}
 		}
 	]
 )
 
-// 一级节点 结构管理
-contextMenuMap.set(api.constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_STRUCT,
+// 二级节点 Modbus TCPIP
+contextMenuMap.set(api.constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_MODBUS_TCPIP, [
+	{
+		label: "新建 Modbus TCPIP 组",
+		id: api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_MODBUS_TCPIP_GROUP,
+		action: (...arg) => {
+			contextMenuAction(...arg, api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_MODBUS_TCPIP_GROUP);
+		}
+	}
+])
+
+// RIGHT_CLICK_STRUCT_VAR_RELATION_MODBUS_TCPIP_GROUP
+// 三级节点 Modbus TCPIP 组
+contextMenuMap.set(api.constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_MODBUS_TCPIP_GROUP, [
+	{
+		label: "新建 Modbus TCPIP 连接",
+		id: api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_MODBUS_TCPIP_ITEM,
+		action: (...arg) => {
+			contextMenuAction(...arg, api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_MODBUS_TCPIP_ITEM);
+		}
+	}
+])
+
+
+// 一级节点 结构管理的右键菜单栏
+contextMenuMap.set(api.constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_STRUCT,
 	[
 		{
 			label: '新建结构群',
-			id: 'create_new_structure_management',
-			action: (node: StructAndVarRelationTreeNodeBase, tree: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase, void>) => {
-				// createNode(node, tree, 'folder', structAndVarRelationIntegrateConstant.STRUCTURAL);
+			id: api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_STRUCT_GROUP,
+			// action: contextMenuAction
+			action: (...arg) => {
+				contextMenuAction(...arg, api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_STRUCT_GROUP);
+			}
+		}
+	]
+);
+
+// 二级节点 结构组的右键菜单栏
+contextMenuMap.set(api.constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_STRUCT_GROUP,
+	[
+		{
+			label: "新建结构元素",
+			id: api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_STRUCT_ITEM,
+			action: (...arg) => {
+				contextMenuAction(...arg, api.constant.structAndVarRelationConstants.CREATE_STRUCT_VAR_RELATION_STRUCT_ITEM);
 			}
 		}
 	]
 )
+
+//
 
 

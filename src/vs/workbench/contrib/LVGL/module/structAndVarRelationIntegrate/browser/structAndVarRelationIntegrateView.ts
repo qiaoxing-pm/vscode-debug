@@ -18,13 +18,20 @@ import { IOpenerService } from "../../../../../../platform/opener/common/opener.
 import { IHoverService } from "../../../../../../platform/hover/browser/hover.js";
 import { WorkbenchAsyncDataTree } from "../../../../../../platform/list/browser/listService.js";
 import { NodeDelegate, NodeRenderer, StructAndVarRelationIntegrateSource } from "../api/class.js";
-import type { StructAndVarRelationTreeNodeBase } from "../../../type/type.js"
+import type { StructAndVarRelationTreeNodeBase, vscodeApiType } from "../../../type/type.js"
 import { contextMenuMap } from '../api/constant.js';
 import { createContextMenu, rename } from '../api/util.js';
 import { IEditorService } from '../../../../../services/editor/common/editorService.js';
 import { StructAndVarRelationIntegrateContent } from './editor/structAndVarRelationIntegrateEditorContent.js';
+import { INotificationService } from '../../../../../../platform/notification/common/notification.js';
+import api from '../../../api/index.js';
 
 export class StructAndVarRelationIntegrateView extends ViewPane {
+
+	private readonly notificationService: INotificationService;
+	private readonly vscodeApi: vscodeApiType;
+
+
 	constructor(
 		options: IViewPaneOptions,
 		@IKeybindingService keybindingService: IKeybindingService,
@@ -35,7 +42,8 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		@IInstantiationService instantiationService: IInstantiationService,
 		@IOpenerService openerService: IOpenerService,
 		@IThemeService themeService: IThemeService,
-		@IHoverService hoverService: IHoverService
+		@IHoverService hoverService: IHoverService,
+		@INotificationService notificationService: INotificationService,
 	) {
 		super(
 			options,
@@ -47,12 +55,14 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 			instantiationService,
 			openerService,
 			themeService,
-			hoverService
+			hoverService,
 		);
+
+		this.notificationService = notificationService;
+		this.vscodeApi = {
+			notificationService,
+		};
 	}
-
-
-
 
 	createBtn(str: string): HTMLElement {
 		const btn = document.createElement('button');
@@ -66,12 +76,14 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		return btn;
 	}
 
-
-
-
 	private tree!: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase>; // 根节点是 null，节点类型是 StructAndVarRelationTreeNodeBase
 
 	protected override renderBody(container: HTMLElement): void {
+
+		api.eventBus.on(api.constant.structAndVarRelationConstants.UPDATE_TREENODE_STRUCT_AND_VARRELATION_INTEGRATE, (e) => {
+			console.log("aklsjdfjklsdaf", e)
+		})
+
 		container.classList.add('structAndVarRelationIntegrate-view');
 
 		const treeContainer = document.createElement('div');
@@ -79,8 +91,8 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		treeContainer.style.display = 'flex';
 		treeContainer.style.minHeight = '0';
 		container.appendChild(treeContainer);
-		const asdf = this.createBtn("test");
-		container.appendChild(asdf)
+		const openExcel = this.createBtn("打开 excel");
+		container.appendChild(openExcel);
 
 		const delegate = new NodeDelegate();
 		const renderer = new NodeRenderer();
@@ -105,28 +117,26 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		this.tree.setInput(null);
 
 		this.tree.onContextMenu(({ element, anchor }) => {
-			console.log("sakljaslh", element)
-			if (!element || !element?.optionType) return;
+			if (!element || !element?.optionType) { return; }
 			if (element.optionType) {
 				const contextMenuData = contextMenuMap.get(element.optionType);
 				if (contextMenuData) {
 					this.contextMenuService.showContextMenu({
 						getAnchor: () => anchor,
 						getActions: () => {
-							return createContextMenu(contextMenuData, element, this.tree);
+							return createContextMenu(contextMenuData, element, this.tree, this.vscodeApi);
 						}
 					});
 				}
 			}
 		});
 
+
 		this.tree.onKeyDown(e => {
-			console.log(e, this.tree.getFocus())
 			if (e.key === "F2") {
-				console.log(e, this.tree.getFocus())
-				rename(this.tree.getFocus()[0])
+				rename(this.tree.getFocus()[0], this.tree, this.vscodeApi);
 			}
-		})
+		});
 	}
 
 	override layoutBody(height: number, width: number): void {

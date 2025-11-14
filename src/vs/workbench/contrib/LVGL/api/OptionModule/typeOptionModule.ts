@@ -170,7 +170,7 @@ class OptionModule {
 
 
 	readonly options = typeOptionsData;
-	readonly optionsMap = typeOptionsDataMap
+	readonly optionsMap = typeOptionsDataMap;
 	readonly containerOptions = containerTypeOptionsData;
 	readonly optionTypeByteLengths = typeByteLengths;
 

@@ -4,6 +4,7 @@ import { IAsyncDataSource } from '../../../../../../base/browser/ui/tree/tree.js
 import { structAndVarRelationIntegrateTreeData } from './constant.js';
 // import { type Node } from './type.js';
 import type { StructAndVarRelationTreeNodeBase } from "../../../type/type.js"
+import api from '../../../api/index.js';
 
 class NodeDelegate implements IListVirtualDelegate<StructAndVarRelationTreeNodeBase> {
 	getHeight(): number { return 22; }
@@ -13,10 +14,11 @@ class NodeDelegate implements IListVirtualDelegate<StructAndVarRelationTreeNodeB
 class NodeRenderer implements ITreeRenderer<StructAndVarRelationTreeNodeBase, never, { label: HTMLSpanElement }> {
 	templateId = 'node';
 	renderTemplate(container: HTMLElement) {
+		const parent = container.closest(".monaco-tl-row");
 		const label = document.createElement('span');
 		const twistie = this.getTwistie(container);
 		container.appendChild(label);
-		return { label, twistie };
+		return { label, twistie, parent };
 	}
 
 	getTwistie(container: HTMLElement) {
@@ -29,18 +31,38 @@ class NodeRenderer implements ITreeRenderer<StructAndVarRelationTreeNodeBase, ne
 		return `monaco-tl-twistie codicon ${iconClass} collapsible`;
 	}
 
-	renderElement(element: ITreeElement<StructAndVarRelationTreeNodeBase>, _index: number, data: { label: HTMLSpanElement, twistie: HTMLDivElement }) {
+	renderElement(element: ITreeElement<StructAndVarRelationTreeNodeBase>, _index: number, data: { label: HTMLSpanElement, twistie: HTMLDivElement, parent: HTMLDivElement }) {
 		data.label.textContent = element.element.name;
+
+		data.parent.onclick = null;
+		data.parent.onclick = (e) => {
+			console.log(e)
+			api.eventBus.emit("upload", {
+				data: element.element,
+			})
+		}
+
+		// parent.addEventListener("click", (e) => {
+		// })
+
+		// parent.addEventListener("click", (e) => {
+		// })
+
+
 		element.element.domNode = data.label;
 		this.renderTwistie(element.element, data.twistie);
+	}
+
+	onclickTreeNode = (dom: HTMLDivElement, target: HTMLElement, treeElement: StructAndVarRelationTreeNodeBase) => {
+		console.log(dom, treeElement.name)
+		api.eventBus.emit("upload", {
+			data: treeElement,
+		});
 	}
 
 
 	renderTwistie(element: StructAndVarRelationTreeNodeBase, twistieElement: HTMLElement): boolean {
 		switch (element.type) {
-			// 	case 'folder':
-			// 		twistieElement.className = this.getTwistieClassTemplate('codicon-tree-item-expanded');
-			// 		break;
 			case 'file':
 				twistieElement.className = this.getTwistieClassTemplate('codicon-file');
 				break;

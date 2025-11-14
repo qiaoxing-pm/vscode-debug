@@ -27,9 +27,7 @@ const variableManagement: StructAndVarRelationTreeNodeBase = {
 	id: "variableManagement",
 	name: "Variable Management",
 	comment: "",
-	dataType: OptionModule.getOptions(
-		constant.optionModulePublicOptions.STRUCT_AND_VAR_RELATION_INTEGRATE
-	)![9].value as string,
+	dataType: constant.structAndVarRelations.VARIABLE_MANAGEMENT,
 	length: "",
 	formatAdjustment: "",
 	connection: "",
@@ -47,7 +45,7 @@ const variableManagement: StructAndVarRelationTreeNodeBase = {
 	parent: null,
 	iconType: "icon-bianliangguanli",
 	connectionParameters: "",
-	optionType: constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_VARIABLE,
+	optionType: constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_VARIABLE,
 	children: [
 	],
 }
@@ -56,9 +54,7 @@ const internalVariable: StructAndVarRelationTreeNodeBase = {
 	id: "internalVariable",
 	name: "内部变量",
 	comment: "",
-	dataType: OptionModule.getOptions(
-		constant.optionModulePublicOptions.STRUCT_AND_VAR_RELATION_INTEGRATE
-	)![4].value as string,
+	dataType: constant.structAndVarRelations.INTERNAL_VARIABLE,
 	length: "",
 	parent: variableManagement,
 	formatAdjustment: "",
@@ -85,9 +81,7 @@ const structManagement: StructAndVarRelationTreeNodeBase = {
 	name: "Structural Management",
 	comment: "",
 	// dataType: 'structManagement',
-	dataType: OptionModule.getOptions(
-		constant.optionModulePublicOptions.STRUCT_AND_VAR_RELATION_INTEGRATE
-	)![10].value as string,
+	dataType: constant.structAndVarRelations.STRUCT_MANAGEMENT,
 	length: "",
 	formatAdjustment: "",
 	connection: "",
@@ -103,7 +97,7 @@ const structManagement: StructAndVarRelationTreeNodeBase = {
 	upperLimit: "",
 	type: "folder",
 	iconType: "icon-structure",
-	optionType: constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_STRUCT,
+	optionType: constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_STRUCT,
 	connectionParameters: "",
 	parent: null,
 }
@@ -117,105 +111,19 @@ const staticData: Array<StructAndVarRelationTreeNodeBase> = [
 
 
 
-
-
-
-
-
-// const staticData: Array<StructAndVarRelationTreeNodeBase> = [
-// 	{
-// 		id: "variableManagement",
-// 		name: "Variable Management",
-// 		comment: "",
-// 		dataType: OptionModule.getOptions(
-// 			constant.optionModulePublicOptions.STRUCT_AND_VAR_RELATION_INTEGRATE
-// 		)![9].value as string,
-// 		length: "",
-// 		formatAdjustment: "",
-// 		connection: "",
-// 		group: "",
-// 		reg: "",
-// 		address: "",
-// 		linearCalibration: "",
-// 		asRangeFrom: "",
-// 		asRangeTo: "",
-// 		osRangeFrom: "",
-// 		osRangeTo: "",
-// 		lowerLimit: "",
-// 		upperLimit: "",
-// 		type: "folder",
-// 		parent: null,
-// 		iconType: "icon-bianliangguanli",
-// 		connectionParameters: "",
-// 		optionType: constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_VARIABLE,
-// 		children: [
-// 			{
-// 				id: "internalVariable",
-// 				name: "内部变量",
-// 				comment: "",
-// 				dataType: OptionModule.getOptions(
-// 					constant.optionModulePublicOptions.STRUCT_AND_VAR_RELATION_INTEGRATE
-// 				)![4].value as string,
-// 				length: "",
-// 				formatAdjustment: "",
-// 				connection: "",
-// 				group: "",
-// 				reg: "",
-// 				address: "",
-// 				linearCalibration: "",
-// 				asRangeFrom: "",
-// 				asRangeTo: "",
-// 				osRangeFrom: "",
-// 				osRangeTo: "",
-// 				lowerLimit: "",
-// 				upperLimit: "",
-// 				type: "folder",
-// 				iconType: "icon-neibubianliang",
-// 				optionType:
-// 					constant.structAndVarRelationConstants.RIGHT_CLICK_STRUCT_VAR_RELATION_INTERNAL_VARIABLE,
-// 				connectionParameters: "",
-// 			},
-// 		],
-// 	},
-// 	{
-// 		id: "structManagement",
-// 		name: "Structural Management",
-// 		comment: "",
-// 		// dataType: 'structManagement',
-// 		dataType: OptionModule.getOptions(
-// 			constant.optionModulePublicOptions.STRUCT_AND_VAR_RELATION_INTEGRATE
-// 		)![10].value as string,
-// 		length: "",
-// 		formatAdjustment: "",
-// 		connection: "",
-// 		group: "",
-// 		reg: "",
-// 		address: "",
-// 		linearCalibration: "",
-// 		asRangeFrom: "",
-// 		asRangeTo: "",
-// 		osRangeFrom: "",
-// 		osRangeTo: "",
-// 		lowerLimit: "",
-// 		upperLimit: "",
-// 		type: "folder",
-// 		iconType: "icon-structure",
-// 		optionType: constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_STRUCT,
-// 		connectionParameters: "",
-// 	},
-// ];
-
-
-
-
-
-
-
+const cantRenameDataType: Set<string> = new Set();
+cantRenameDataType.add(constant.structAndVarRelations.VARIABLE_MANAGEMENT);
+cantRenameDataType.add(constant.structAndVarRelations.INTERNAL_VARIABLE);
+cantRenameDataType.add(constant.structAndVarRelations.STRUCT_MANAGEMENT);
+// cantRenameDataType.add(constant.structAndVarRelations.MODBUS_TCPIP_GROUP);
+cantRenameDataType.add(constant.structAndVarRelations.MODBUS_TCPIP)
 
 
 class StructAndVarRelationIntegrateModule implements ApiModuleImpl {
 	private structAndVarRelationIntegrateLocalStoreKey = "structAndVarRelationIntegrateLocalStoreKey";
 	private structAndVarRelationIntegrateLocalStoreHeadKey = "structAndVarRelationIntegrateLocalStoreHeadKey"
+
+	private cantRename: Set<string> = cantRenameDataType;
 
 	private api: ApiInterface | null = null;
 
@@ -241,12 +149,12 @@ class StructAndVarRelationIntegrateModule implements ApiModuleImpl {
 
 	init(apiInstance: ApiInterface) {
 		this.api = apiInstance;
-		const oldData = localStorage.getItem(this.structAndVarRelationIntegrateLocalStoreKey);
-		if (oldData) {
-			this.setData(JSON.parse(oldData));
-		} else {
-			this.setData(staticData);
-		}
+		// const oldData = localStorage.getItem(this.structAndVarRelationIntegrateLocalStoreKey);
+		// if (oldData) {
+		// 	this.setData(JSON.parse(oldData));
+		// } else {
+		this.setData(staticData);
+		// }
 		this.treeFlattener.build(this.data, {}, {});
 		// console.log(this.treeFlattener)
 		// const head = localStorage.getItem(this.structAndVarRelationIntegrateLocalStoreHeadKey);
@@ -335,7 +243,12 @@ class StructAndVarRelationIntegrateModule implements ApiModuleImpl {
 	}
 
 	getTreeFlattener() {
+		this.treeFlattener.build(this.data, {}, {});
 		return this.treeFlattener;
+	}
+
+	canRename(dataType: string) {
+		return !this.cantRename.has(dataType);
 	}
 }
 

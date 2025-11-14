@@ -1,3 +1,5 @@
+import { INotificationService } from '../../../../platform/notification/common/notification.js';
+
 export interface ruleType {
 	id: string;
 	label: string;
@@ -320,6 +322,10 @@ export interface VariableDataType {
 	selected: boolean;
 	deletionProhibited: boolean;
 	children: Omit<VariableDataType, "children">[];
+}
+
+export interface vscodeApiType {
+	notificationService: INotificationService;
 }
 
 // export interface VariableDataType {

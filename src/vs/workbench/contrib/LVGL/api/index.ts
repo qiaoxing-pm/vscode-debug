@@ -5,6 +5,7 @@ import TypeOptionModule from "./OptionModule/typeOptionModule.js";
 import StructAndVarRelationIntegrateModule from "./StructAndVarRelationIntegrateModule/StructAndVarRelationIntegrateModule.js";
 import StructureModule from "./StructureModule/StructureModule.js";
 import VariableModule from "./VariableModule/VariableModule.js";
+// import MessageModule from './MessageModule/MessageModule.js';
 
 export type ApiModuleImpl = {
 	init?: (api: ApiInterface) => void;
@@ -19,6 +20,7 @@ export interface ApiInterface {
 	structure: typeof StructureModule;
 	variable: typeof VariableModule;
 	typeOption: typeof TypeOptionModule;
+	// Message: typeof MessageModule;
 	init: () => void;
 }
 
@@ -32,6 +34,7 @@ class API<T extends Record<string, ApiModuleImpl> = {}>
 	structure: typeof StructureModule = StructureModule;
 	variable: typeof VariableModule = VariableModule;
 	typeOption: typeof TypeOptionModule = TypeOptionModule;
+	// message: typeof MessageModule = MessageModule;
 
 	constructor() { }
 
