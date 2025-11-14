@@ -60,14 +60,12 @@ export class StructAndVarRelationIntegrateEditor extends EditorPane {
 			variableExcel.mockTreeData = mockTreeData;
 			variableExcel.api = api;
 			variableExcel.util = util;
+			container.appendChild(variableExcel);
 
 			api.eventBus.on('upload', (e) => {
-				console.log(e)
-				console.log("treeFlattener\n", treeFlattener)
-				variableExcel.mockTreeData = treeFlattener.buildSourceTree(treeFlattener.getNodeBySourceId(e.data.id)?.treeId);
+				variableExcel.mockTreeData = [e.data];
 			});
 
-			container.appendChild(variableExcel);
 		} catch (error) {
 			console.error("加载协议失败", error);
 		}

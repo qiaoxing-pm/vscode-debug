@@ -430,8 +430,8 @@ class NewTreeFlattener<T extends Record<string, any>> {
 
 		return currentArr.filter(
 			(item) =>
-				item.optionType ===
-				api.constant.structAndVarRelationConstants.STRUCT_VAR_RELATION_STRUCT_ELEMENT
+				item.dataType ===
+				api.constant.structAndVarRelations.STRUCT_ITEM
 		);
 	}
 
@@ -520,7 +520,6 @@ class NewTreeFlattener<T extends Record<string, any>> {
 		if (tempEditHistory.length) {
 			this.editHistory.push(tempEditHistory);
 		}
-		console.log(this.editHistory);
 
 		return shouldUpdateUI;
 	}

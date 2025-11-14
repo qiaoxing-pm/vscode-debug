@@ -5,7 +5,9 @@ import TypeOptionModule from "./OptionModule/typeOptionModule.js";
 import StructAndVarRelationIntegrateModule from "./StructAndVarRelationIntegrateModule/StructAndVarRelationIntegrateModule.js";
 import StructureModule from "./StructureModule/StructureModule.js";
 import VariableModule from "./VariableModule/VariableModule.js";
-// import MessageModule from './MessageModule/MessageModule.js';
+import MaxGraphModule from './MaxGraphModule.ts/MaxGraphModule.js';
+import command from "./command.js";
+
 
 export type ApiModuleImpl = {
 	init?: (api: ApiInterface) => void;
@@ -20,6 +22,9 @@ export interface ApiInterface {
 	structure: typeof StructureModule;
 	variable: typeof VariableModule;
 	typeOption: typeof TypeOptionModule;
+	maxGraph: typeof MaxGraphModule;
+
+
 	// Message: typeof MessageModule;
 	init: () => void;
 }
@@ -34,11 +39,13 @@ class API<T extends Record<string, ApiModuleImpl> = {}>
 	structure: typeof StructureModule = StructureModule;
 	variable: typeof VariableModule = VariableModule;
 	typeOption: typeof TypeOptionModule = TypeOptionModule;
+	maxGraph: typeof MaxGraphModule = MaxGraphModule;
 	// message: typeof MessageModule = MessageModule;
 
 	constructor() { }
 
 	init() {
+		command(this);
 		Object.values(this).forEach((module: ApiModuleImpl) => {
 			if (typeof module.init === "function") {
 				module.init(this);

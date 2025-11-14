@@ -68,21 +68,21 @@ export class StructAndVarRelationIntegrateView extends ViewPane {
 		const btn = document.createElement('button');
 		btn.textContent = str;
 		btn.addEventListener('click', async () => {
-			const editorService = this.instantiationService.invokeFunction(accessor => accessor.get(IEditorService));
-			const input = this.instantiationService.createInstance(StructAndVarRelationIntegrateContent, "ProtocolB");
-			editorService.openEditor(input);
+			this.openEditor();
 		});
 
 		return btn;
+	}
+	openEditor() {
+		const editorService = this.instantiationService.invokeFunction(accessor => accessor.get(IEditorService));
+		const input = this.instantiationService.createInstance(StructAndVarRelationIntegrateContent, "ProtocolB");
+		editorService.openEditor(input);
 	}
 
 	private tree!: WorkbenchAsyncDataTree<null, StructAndVarRelationTreeNodeBase>; // 根节点是 null，节点类型是 StructAndVarRelationTreeNodeBase
 
 	protected override renderBody(container: HTMLElement): void {
 
-		api.eventBus.on(api.constant.structAndVarRelationConstants.UPDATE_TREENODE_STRUCT_AND_VARRELATION_INTEGRATE, (e) => {
-			console.log("aklsjdfjklsdaf", e)
-		})
 
 		container.classList.add('structAndVarRelationIntegrate-view');
 

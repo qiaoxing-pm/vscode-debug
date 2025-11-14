@@ -2,25 +2,19 @@ import type { ApiInterface, ApiModuleImpl } from "../index.js";
 
 import type {
 	StructAndVarRelationTreeNodeBase,
-	headType,
 	optionType,
 	TreeNodeType,
 } from "../../type/type.js";
 
 import constant from "../ConstantModule/ConstantModule.js";
-
-import OptionModule from "../OptionModule/OptionModule.js";
 import TypeOptionModule from "../OptionModule/typeOptionModule.js";
-
 import TreeEntry from "../../classes/TreeEntry.js";
 import {
 	getGroupOption,
-	getConnectionOption,
-	getHexCodesFrom0To127,
 	getOptionByDataType,
 } from "../../util/util.js";
-
 import api from "../index.js"
+
 
 
 const variableManagement: StructAndVarRelationTreeNodeBase = {
@@ -137,6 +131,9 @@ class StructAndVarRelationIntegrateModule implements ApiModuleImpl {
 
 	private _api = {};
 
+	private variableExcelDom: HTMLElement | null = null;
+	private variableParentExcelDom: HTMLElement | null = null;
+
 	private rule = {
 		id: "id",
 		label: "name",
@@ -249,6 +246,15 @@ class StructAndVarRelationIntegrateModule implements ApiModuleImpl {
 
 	canRename(dataType: string) {
 		return !this.cantRename.has(dataType);
+	}
+
+	getVariableExcelDom() {
+		return [this.variableParentExcelDom, this.variableExcelDom];
+	}
+
+	setVariableExcelDom(newParentDom: HTMLElement, newDom: HTMLElement) {
+		this.variableParentExcelDom = newParentDom;
+		this.variableExcelDom = newDom;
 	}
 }
 
