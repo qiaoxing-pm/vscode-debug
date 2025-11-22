@@ -12,7 +12,6 @@
 	margin: 4px;
 	height: 84px;
 	border-radius: 4px;
-	/* background-color: rgb(121, 121, 121); */
 }
 
 
@@ -47,4 +46,9 @@
 	display: inline-block;
 	flex: 1;
 	height: 100%;
+}
+
+
+.twistieElementPadding {
+	padding-left: 16px;
 }

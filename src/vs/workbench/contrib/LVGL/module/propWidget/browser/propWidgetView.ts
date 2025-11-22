@@ -51,10 +51,10 @@ export class propWidgetView extends ViewPane {
 
 
 	protected override renderBody(container: HTMLElement): void {
-		const controlVariablesDom = this.propWidget();
+		// const controlVariablesDom = this.propWidget();
 		// const sideBar = this.sideBar();
 		// controlVariablesDom
-		container.appendChild(controlVariablesDom);
+		// container.appendChild(controlVariablesDom);
 
 	}
 

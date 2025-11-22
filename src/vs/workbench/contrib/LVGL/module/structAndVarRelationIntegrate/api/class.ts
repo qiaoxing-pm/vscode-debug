@@ -28,7 +28,7 @@ class NodeRenderer implements ITreeRenderer<StructAndVarRelationTreeNodeBase, ne
 	}
 
 	getTwistieClassTemplate(iconClass: string) {
-		return `monaco-tl-twistie codicon ${iconClass} collapsible`;
+		// return `monaco-tl-twistie codicon ${iconClass} collapsible`;
 	}
 
 	renderElement(element: ITreeElement<StructAndVarRelationTreeNodeBase>, _index: number, data: { label: HTMLSpanElement, twistie: HTMLDivElement, parent: HTMLDivElement }) {
@@ -57,10 +57,10 @@ class NodeRenderer implements ITreeRenderer<StructAndVarRelationTreeNodeBase, ne
 	renderTwistie(element: StructAndVarRelationTreeNodeBase, twistieElement: HTMLElement): boolean {
 		switch (element.type) {
 			case 'file':
-				twistieElement.className = this.getTwistieClassTemplate('codicon-file');
+				// twistieElement.className = this.getTwistieClassTemplate('codicon-file');
 				break;
 			case 'tsx':
-				twistieElement.className = this.getTwistieClassTemplate('codicon-file');
+				// twistieElement.className = this.getTwistieClassTemplate('codicon-file');
 				break;
 		}
 		return true;

@@ -31,7 +31,7 @@ class NodeRenderer implements ITreeRenderer<Node, never, { label: HTMLSpanElemen
 	}
 
 	getTwistieClassTemplate(iconClass: string) {
-		return `monaco-tl-twistie codicon ${iconClass} collapsible`
+		return `monaco-tl-twistie codicon ${iconClass} collapsible`;
 	}
 
 	renderElement(element: ITreeElement<Node>, _index: number, data: { label: HTMLSpanElement, twistie: HTMLDivElement }) {
@@ -40,14 +40,18 @@ class NodeRenderer implements ITreeRenderer<Node, never, { label: HTMLSpanElemen
 	}
 
 	renderTwistie(element: Node, twistieElement: HTMLElement): boolean {
-		switch (element.type) {
-			case 'file':
-				twistieElement.className = this.getTwistieClassTemplate('codicon codicon-file');
-				break;
-			case 'tsx':
-				twistieElement.className = this.getTwistieClassTemplate('codicon codicon-file');
-				break;
-		}
+		// switch (element.type) {
+		// 	case 'file':
+		// 		// twistieElement.className = this.getTwistieClassTemplate('codicon codicon-file');
+		// 		// twistieElement.style.paddingLeft = "22px";
+		// 		break;
+		// 	case 'tsx':
+		// 		// twistieElement.className = this.getTwistieClassTemplate('codicon codicon-file');
+		// 		// twistieElement.style.paddingLeft = "22px";
+		// 		break;
+		// }
+		// twistieElement.style.paddingLeft = "22px";
+		twistieElement.classList.add("twistieElementPadding")
 		return true;
 	}
 

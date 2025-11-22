@@ -81,6 +81,7 @@ import './contrib/LVGL/module/widgetList/browser/widgetList.contribution.js';
 import "./contrib/LVGL/module/assert/browser/assert.contribution.js";
 // import "./contrib/LVGL/old/architect/browser/architect.contribution.js";
 import "./contrib/LVGL/module/propWidget/browser/propWidget.contribution.js";
+import "./contrib/LVGL/module/project/browser/project.contribution.js";
 
 
 import { InstantiationType, registerSingleton } from '../platform/instantiation/common/extensions.js';

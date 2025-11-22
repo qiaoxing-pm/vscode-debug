@@ -50,12 +50,12 @@ export class HierachyView extends ViewPane {
 	private tree!: WorkbenchAsyncDataTree<null, Node>; // 根节点是 null，节点类型是 Node
 
 	protected override renderBody(container: HTMLElement): void {
-		container.classList.add('hierarchy-view');
+		// container.classList.add('hierarchy-view');
 
 		const treeContainer = document.createElement('div');
-		treeContainer.style.flex = '1';
-		treeContainer.style.display = 'flex';
-		treeContainer.style.minHeight = '0';
+		// treeContainer.style.flex = '1';
+		// treeContainer.style.display = 'flex';
+		// treeContainer.style.minHeight = '0';
 		container.appendChild(treeContainer);
 
 		const delegate = new NodeDelegate();

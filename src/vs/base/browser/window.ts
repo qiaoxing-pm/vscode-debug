@@ -4,9 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 import '../../workbench/contrib/LVGL/lib/PropertyInput.iife.js';
 import '../../workbench/contrib/LVGL/lib/index.iife.js';
-import "../../workbench/contrib/LVGL/lib/propWidget/index.iife.js"
+// import "../../workbench/contrib/LVGL/lib/propWidget/index.iife.js"
 // import "../../workbench/contrib/LVGL/lib/propWidget.iife.js"
-import api from "../../workbench/contrib/LVGL/api/index.js";
+// import api from "../../workbench/contrib/LVGL/api/index.js";
 
 // 用于标识VS Code 窗口的唯一ID
 export type CodeWindow = Window & typeof globalThis & {
