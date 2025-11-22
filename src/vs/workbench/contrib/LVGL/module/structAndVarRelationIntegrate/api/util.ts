@@ -360,7 +360,7 @@ export const createNewNode = async (type: string, treeNode: StructAndVarRelation
 				id: crypto.randomUUID() as string,
 				name: '',
 				comment: '',
-				dataType: api.constant.structAndVarRelations.STRUCT_ITEM,
+				dataType: api.typeOption.getTypeOptions()[0].value,
 				length: '',
 				formatAdjustment: '',
 				connection: '',

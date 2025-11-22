@@ -73,11 +73,15 @@ import './services/auxiliaryWindow/browser/auxiliaryWindowService.js';
 import './services/browserElements/browser/webBrowserElementsService.js';
 
 
-// LVGL 相关模块
+//#region LVGL 相关模块
 import './contrib/LVGL/api_demo/eventBus.js';
 import './contrib/LVGL/module/hierachy/browser/hierachy.contribution.js';
 import './contrib/LVGL/module/structAndVarRelationIntegrate/browser/structAndVarRelationIntegrate.contribution.js';
 import './contrib/LVGL/module/widgetList/browser/widgetList.contribution.js';
+import "./contrib/LVGL/module/assert/browser/assert.contribution.js";
+// import "./contrib/LVGL/old/architect/browser/architect.contribution.js";
+import "./contrib/LVGL/module/propWidget/browser/propWidget.contribution.js";
+
 
 import { InstantiationType, registerSingleton } from '../platform/instantiation/common/extensions.js';
 import { IAccessibilityService } from '../platform/accessibility/common/accessibility.js';

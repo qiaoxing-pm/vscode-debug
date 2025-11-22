@@ -24,7 +24,7 @@ Registry.as<IViewsRegistry>(Extensions.ViewsRegistry).registerViews(
 	[
 		{
 			id: 'workbench.view.widgetList',
-			name: localize2('widgetListView.name', "部件列表"),
+			name: localize2('widgetListView', "部件列表"),
 			containerIcon: widgetListViewIcon,
 			ctorDescriptor: new SyncDescriptor(WidgetListView),
 			canToggleVisibility: true,

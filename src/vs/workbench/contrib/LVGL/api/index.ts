@@ -5,9 +5,9 @@ import TypeOptionModule from "./OptionModule/typeOptionModule.js";
 import StructAndVarRelationIntegrateModule from "./StructAndVarRelationIntegrateModule/StructAndVarRelationIntegrateModule.js";
 import StructureModule from "./StructureModule/StructureModule.js";
 import VariableModule from "./VariableModule/VariableModule.js";
-import MaxGraphModule from './MaxGraphModule.ts/MaxGraphModule.js';
+import MaxGraphModule from './MaxGraphModule/MaxGraphModule.js';
 import command from "./command.js";
-
+import PopUpModule from './PopUpModule/PopUpModule.js';
 
 export type ApiModuleImpl = {
 	init?: (api: ApiInterface) => void;
@@ -23,6 +23,7 @@ export interface ApiInterface {
 	variable: typeof VariableModule;
 	typeOption: typeof TypeOptionModule;
 	maxGraph: typeof MaxGraphModule;
+	popUp: typeof PopUpModule;
 
 
 	// Message: typeof MessageModule;
@@ -40,6 +41,7 @@ class API<T extends Record<string, ApiModuleImpl> = {}>
 	variable: typeof VariableModule = VariableModule;
 	typeOption: typeof TypeOptionModule = TypeOptionModule;
 	maxGraph: typeof MaxGraphModule = MaxGraphModule;
+	popUp: typeof PopUpModule = PopUpModule;
 	// message: typeof MessageModule = MessageModule;
 
 	constructor() { }

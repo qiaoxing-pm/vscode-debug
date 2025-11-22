@@ -2,6 +2,11 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+import '../../workbench/contrib/LVGL/lib/PropertyInput.iife.js';
+import '../../workbench/contrib/LVGL/lib/index.iife.js';
+import "../../workbench/contrib/LVGL/lib/propWidget/index.iife.js"
+// import "../../workbench/contrib/LVGL/lib/propWidget.iife.js"
+import api from "../../workbench/contrib/LVGL/api/index.js";
 
 // 用于标识VS Code 窗口的唯一ID
 export type CodeWindow = Window & typeof globalThis & {
@@ -37,7 +42,17 @@ export const mainWindow = window as CodeWindow;
 export function isAuxiliaryWindow(obj: Window): obj is CodeWindow {
 
 	// XLH-F5
-	console.warn("调试，窗口检测", obj)
+	// console.warn("调试，窗口检测", obj)
+	// const mcxaSelectOption = document.createElement('mcxa-select-option');
+	// const mcxaCascaderOption = document.createElement('mcxa-cascader-option');
+	// mcxaSelectOption.api = api;
+	// mcxaCascaderOption.api = api;
+
+	// document.body.appendChild(mcxaSelectOption);
+	// document.body.appendChild(mcxaCascaderOption);
+
+
+
 
 	if (obj === mainWindow) {
 		return false;

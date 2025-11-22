@@ -36,17 +36,10 @@ class NodeRenderer implements ITreeRenderer<StructAndVarRelationTreeNodeBase, ne
 
 		data.parent.onclick = null;
 		data.parent.onclick = (e) => {
-			console.log(e)
 			api.eventBus.emit("upload", {
 				data: element.element,
 			})
 		}
-
-		// parent.addEventListener("click", (e) => {
-		// })
-
-		// parent.addEventListener("click", (e) => {
-		// })
 
 
 		element.element.domNode = data.label;

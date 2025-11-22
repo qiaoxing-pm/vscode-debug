@@ -166,63 +166,6 @@ export class WidgetListView extends ViewPane {
 		this.list.splice(0, this.items.length, this.items);
 	}
 
-	// override layoutBody(height: number, width: number): void {
-	// 	super.layoutBody(height, width);
-	// 	if (this.list && this.delegate) {
-	// 		this.delegate.containerWidth = width; // 更新容器宽度
-	// 		this.list.layout(height, width);       // 重新布局
-	// 	}
-	// }
-
-
-
-
-
-
-
-
-
-
-
-
-	// 	override layoutBody(height: number, width: number): void {
-	//     super.layoutBody(height, width);
-
-	//     if (this.list && this.delegate) {
-	//         // 1. 更新容器宽度
-	//         this.delegate.containerWidth = width;
-
-	//         // 2. 遍历节点，重新计算高度
-	//         const input = this.list.getInput();
-	//         if (input) {
-	//             const rootNode = this.list.getNode(input);
-	//             const nodesToUpdate = rootNode.children;
-
-	//             for (const node of nodesToUpdate) {
-	//                 const newHeight = this.delegate.getHeight(node.element);
-	//                 this.list.updateElementHeight(node.element, newHeight);
-	//             }
-	//         }
-
-	//         // 3. 重新布局列表
-	//         this.list.layout(height, width);
-	//     }
-	// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	override layoutBody(height: number, width: number): void {
 		super.layoutBody(height, width);

@@ -19,7 +19,6 @@ export const treeNodeIdAndObj = <T extends Record<string, any>>(
 	contentMap: Map<string | number, TreeNodeType<T>>;
 	contentArray: Array<TreeNodeType<T>>;
 } => {
-	console.log(treeData)
 	let tack: Array<TreeNodeType<T>> = [...treeData].reverse().map((item: T) => {
 		let tempExpand = config.autoExpand ?? false;
 		if (config.expandedKeys?.includes(item[rule.id])) {
