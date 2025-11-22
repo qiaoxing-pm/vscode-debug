@@ -107,12 +107,14 @@ import { IHoverService } from "../../../../../../platform/hover/browser/hover.js
 import { WorkbenchAsyncDataTree } from '../../../../../../platform/list/browser/listService.js';
 import type { Node } from "../api/type.js";
 import { ProjectTreeDataSource, NodeRenderer, NodeDelegate } from '../api/class.js';
-
+import { ExplorerView } from '../../../../files/browser/views/explorerView.js';
+import { IViewsService } from '../../../../../services/views/common/viewsService.js';
 
 export class projectView extends ViewPane {
 
 	private tree!: WorkbenchAsyncDataTree<null, Node>;
 	private modulePanel!: HTMLElement;
+	private viewSService: IViewsService;
 
 	constructor(
 		options: IViewPaneOptions,
@@ -125,70 +127,171 @@ export class projectView extends ViewPane {
 		@IOpenerService openerService: IOpenerService,
 		@IThemeService themeService: IThemeService,
 		@IHoverService hoverService: IHoverService,
+		@IViewsService viewSService: IViewsService,
 	) {
 		super(options, keybindingService, contextMenuService, configurationService, contextKeyService, viewDescriptorService, instantiationService, openerService, themeService, hoverService);
+		this.viewSService = viewSService;
+
 	}
 
 	protected override renderBody(container: HTMLElement): void {
+		container.appendChild(this.createBtn("asd"));
 
-		container.classList.add('project-view');
-		container.style.display = "flex";
-		container.style.flexDirection = "column";
+	}
+	async getExplorerData() {
+		// // 获取内部 View 实例
+		// const container = this.viewSService.openViewContainer('workbench.view.explorer', true).then((e) => {
+		// 	const explore = e?.viewPaneContainer?.getExplorerView();
+		// 	if (explore) {
+		// 		const asdf = explore.tree.root.children[0].children[0]
+		// 		explore.tree.root.children[0].children.push({
+		// 			...asdf,
+		// 			id: "file:///agents::file:///agents/demonstrate2.md",
+		// 		})
+		// 	}
+		// });
 
-		// -------------------------------
-		// Tree 区域
-		// -------------------------------
-		const treeContainer = document.createElement('div');
-		treeContainer.style.flex = '1';
-		treeContainer.style.minHeight = "0";
-		container.appendChild(treeContainer);
+		this.viewSService.openViewContainer('workbench.view.explorer', true).then(e => {
+			const explore = e?.viewPaneContainer?.getExplorerView();
+			if (!explore) return;
 
-		// -------------------------------
-		// Extra Panel（用于显示模块内容）
-		// -------------------------------
-		this.modulePanel = document.createElement("div");
-		this.modulePanel.className = "project-module-panel";
-		this.modulePanel.style.display = "none";
-		this.modulePanel.style.padding = "10px";
-		this.modulePanel.style.borderTop = "1px solid var(--vscode-panel-border)";
-		container.appendChild(this.modulePanel);
+			// const firstNode = explore.tree.root.children[0].children[0];
+			console.log(this.deepClone(explore.tree.root))
 
-		// -------------------------------
-		// 创建 Tree
-		// -------------------------------
-		const delegate = new NodeDelegate();
-		const renderer = new NodeRenderer();
-		const dataSource = new ProjectTreeDataSource();
+			// const newNode = {
+			// 	...firstNode,
+			// 	id: "file:///agents/demonstrate2.md",  // 使用标准 URI
+			// 	children: [], // 新节点不拷贝原有子节点
+			// };
 
-		this.tree = this.instantiationService.createInstance(
-			WorkbenchAsyncDataTree,
-			'projectViewTree',
-			treeContainer,
-			delegate,
-			[renderer],
-			dataSource,
-			{
-				identityProvider: { getId: node => node.label }
-			}
-		);
+			// explore.tree.root.children[0].children.push(newNode);
 
-		this.tree.setInput(null);
-
-		// -------------------------------
-		// 点击节点显示 panel
-		// -------------------------------
-		this.tree.onDidOpen(event => {
-			const node = event.element;
-
-			if (!node) return;
-
-			// 只有 module 类型显示扩展 UI
-			if (node.type === "module") {
-				this.showModulePanel(node);
-			} else {
-				this.hideModulePanel();
-			}
+			// // 如果树有 refresh 方法，调用刷新
+			// if (typeof explore.tree.refresh === 'function') {
+			// 	explore.tree.refresh();
+			// }
 		});
+
+
+		// console.log(container);
+	}
+	deepClone<T>(value: T): T {
+		const cache = new WeakMap();
+		const stack: { source: any; target: any }[] = [];
+
+		// 原始类型直接返回
+		if (value === null || typeof value !== "object") return value;
+
+		let root: any;
+
+		// 创建根节点
+		if (Array.isArray(value)) {
+			root = [];
+		} else if (value instanceof Map) {
+			root = new Map();
+		} else if (value instanceof Set) {
+			root = new Set();
+		} else if (value instanceof Date) {
+			return new Date(value.getTime()) as T;
+		} else if (value instanceof RegExp) {
+			return new RegExp(value.source, value.flags) as T;
+		} else {
+			root = Object.create(Object.getPrototypeOf(value));
+		}
+
+		cache.set(value, root);
+		stack.push({ source: value, target: root });
+
+		while (stack.length > 0) {
+			const { source, target } = stack.pop()!;
+
+			if (Array.isArray(source)) {
+				for (let i = 0; i < source.length; i++) {
+					const item = source[i];
+					if (item !== null && typeof item === "object") {
+						if (cache.has(item)) {
+							target[i] = cache.get(item);
+						} else {
+							let clone: any;
+							if (Array.isArray(item)) clone = [];
+							else if (item instanceof Map) clone = new Map();
+							else if (item instanceof Set) clone = new Set();
+							else if (item instanceof Date) clone = new Date(item.getTime());
+							else if (item instanceof RegExp) clone = new RegExp(item.source, item.flags);
+							else clone = Object.create(Object.getPrototypeOf(item));
+
+							cache.set(item, clone);
+							target[i] = clone;
+							stack.push({ source: item, target: clone });
+						}
+					} else {
+						target[i] = item;
+					}
+				}
+			} else if (source instanceof Map) {
+				source.forEach((v, k) => {
+					const newKey = (k !== null && typeof k === "object") ? cache.get(k) ?? k : k;
+					const newValue = (v !== null && typeof v === "object") ? cache.get(v) ?? v : v;
+
+					if (v !== null && typeof v === "object" && !cache.has(v)) stack.push({ source: v, target: newValue });
+					if (k !== null && typeof k === "object" && !cache.has(k)) stack.push({ source: k, target: newKey });
+
+					target.set(newKey, newValue);
+				});
+			} else if (source instanceof Set) {
+				source.forEach((v) => {
+					const newValue = (v !== null && typeof v === "object") ? cache.get(v) ?? v : v;
+					if (v !== null && typeof v === "object" && !cache.has(v)) stack.push({ source: v, target: newValue });
+					target.add(newValue);
+				});
+			} else {
+				const keys = [
+					...Object.getOwnPropertyNames(source),
+					...Object.getOwnPropertySymbols(source),
+				];
+
+				for (const key of keys) {
+					const desc = Object.getOwnPropertyDescriptor(source, key);
+					if (!desc || desc.writable || desc.set) {
+						const val = source[key];
+						if (val !== null && typeof val === "object") {
+							if (cache.has(val)) {
+								target[key] = cache.get(val);
+							} else {
+								let clone: any;
+								if (Array.isArray(val)) clone = [];
+								else if (val instanceof Map) clone = new Map();
+								else if (val instanceof Set) clone = new Set();
+								else if (val instanceof Date) clone = new Date(val.getTime());
+								else if (val instanceof RegExp) clone = new RegExp(val.source, val.flags);
+								else clone = Object.create(Object.getPrototypeOf(val));
+
+								cache.set(val, clone);
+								target[key] = clone;
+								stack.push({ source: val, target: clone });
+							}
+						} else {
+							target[key] = val;
+						}
+					}
+				}
+			}
+		}
+
+		return root as T;
+	}
+
+
+	createBtn(str: string): HTMLElement {
+		const btn = document.createElement('button');
+		btn.textContent = str;
+		btn.addEventListener('click', async () => {
+			// this.openEditor();
+			this.getExplorerData();
+
+		});
+
+		return btn;
 	}
 
 	private showModulePanel(node: Node) {
@@ -207,6 +310,6 @@ export class projectView extends ViewPane {
 
 	override layoutBody(height: number, width: number): void {
 		super.layoutBody(height, width);
-		this.tree.layout(height);
+		// this.tree.layout(height);
 	}
 }
