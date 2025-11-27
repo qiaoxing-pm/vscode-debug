@@ -59,35 +59,30 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 
 	private renderUI(content: string, resource: URI) {
 		this.container.innerHTML = '';
-		initLvglModule();
-
-
-		setTimeout(() => {
-			const screen = createNewScreen(
-				"asd",
-				1000,
-				1000,
-			)
-			console.log(screen)
-			const containerWrapper = document.createElement('div');
-			containerWrapper.style.height = "100%";
-			containerWrapper.style.position = 'relative';
-			const containerDiv = document.createElement('div');
-			containerDiv.style.width = "100%"
-			containerDiv.style.height = '100%'
-			containerDiv.style.position = 'absolute'
-			containerDiv.style.zIndex = '2';
-			const canvas = document.createElement('canvas');
-			canvas.style.background = "red"
-			canvas.style.height = "600px";
-			canvas.style.width = "800px";
-			containerWrapper.appendChild(containerDiv);
-			containerWrapper.appendChild(canvas);
-			this.container.appendChild(containerWrapper);
-			// const rpcProvider: any = new RpcProvider((m, t) =>
-			// 	window.postMessage(m, "*", t)
-			// );
-			// const graph = createLvglGraph(containerDiv, canvas, screen, rpcProvider)
-		}, 2000)
+		const screen = createNewScreen(
+			"asd",
+			1000,
+			1000,
+		)
+		console.log(screen)
+		const containerWrapper = document.createElement('div');
+		containerWrapper.style.height = "100%";
+		containerWrapper.style.position = 'relative';
+		const containerDiv = document.createElement('div');
+		containerDiv.style.width = "100%"
+		containerDiv.style.height = '100%'
+		containerDiv.style.position = 'absolute'
+		containerDiv.style.zIndex = '2';
+		const canvas = document.createElement('canvas');
+		canvas.style.background = "red"
+		canvas.style.height = "600px";
+		canvas.style.width = "800px";
+		containerWrapper.appendChild(containerDiv);
+		containerWrapper.appendChild(canvas);
+		this.container.appendChild(containerWrapper);
+		const rpcProvider: any = new RpcProvider((m, t) =>
+			window.postMessage(m, "*", t)
+		);
+		const graph = createLvglGraph(containerDiv, canvas, screen, rpcProvider)
 	}
 }

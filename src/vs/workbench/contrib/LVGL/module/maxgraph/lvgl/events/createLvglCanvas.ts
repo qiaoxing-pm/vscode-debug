@@ -81,7 +81,22 @@ export default function createLvglGraph(container: HTMLDivElement, canvas: HTMLC
 	usePopupMenu(graph, screen, graph.undoManager, rpcProvider);
 	InternalEvent.disableContextMenu(container);
 	registerLvglShape();
-
+	graph.insertVertex(
+		graph.getDefaultParent(),
+		null,
+		null,
+		100,
+		100,
+		100,
+		100,
+		{
+			shape: "lvgl_" + "arc",
+			screen: graph.screen.screenObj,
+			// polyCoords: rect.points.map((p) => new Point(p.x, p.y)),
+			// foldable: false,
+		},
+	);
+	// graph.setEventsEnabled
 	return graph;
 }
 

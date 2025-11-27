@@ -16,28 +16,28 @@ export class KeyboardHandler {
 	normalKeys: { [key: string]: KeyBoardCb } = {};
 
 	constructor(graph: Graph, container: HTMLElement) {
-		console.log("las;jhlkasjf", graph, container)
+		// console.log("las;jhlkasjf", graph, container)
 		this.graph = graph;
-		container.addEventListener("keydown", (e: KeyboardEvent) => {
-			console.log('kjasfhkljashf', e)
-			const keyCode = e.key;
-			if (e.ctrlKey) {
-				if (this.controlKeys[keyCode]) {
-					this.controlKeys[keyCode](e);
-					e.preventDefault();
-				}
-			} else if (e.shiftKey) {
-				if (this.shiftKeys[keyCode]) {
-					this.shiftKeys[keyCode](e);
-					e.preventDefault();
-				}
-			} else {
-				if (this.normalKeys[keyCode]) {
-					this.normalKeys[keyCode](e);
-					e.preventDefault();
-				}
-			}
-		});
+		// container.addEventListener("keydown", (e: KeyboardEvent) => {
+		// 	console.log('kjasfhkljashf', e)
+		// 	const keyCode = e.key;
+		// 	if (e.ctrlKey) {
+		// 		if (this.controlKeys[keyCode]) {
+		// 			this.controlKeys[keyCode](e);
+		// 			e.preventDefault();
+		// 		}
+		// 	} else if (e.shiftKey) {
+		// 		if (this.shiftKeys[keyCode]) {
+		// 			this.shiftKeys[keyCode](e);
+		// 			e.preventDefault();
+		// 		}
+		// 	} else {
+		// 		if (this.normalKeys[keyCode]) {
+		// 			this.normalKeys[keyCode](e);
+		// 			e.preventDefault();
+		// 		}
+		// 	}
+		// });
 	}
 
 	bindKey(key: string, cb: KeyBoardCb) {

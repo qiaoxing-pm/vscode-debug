@@ -8,6 +8,7 @@ import { EditorExtensions } from '../../../common/editor.js';
 import { IEditorResolverService, RegisteredEditorPriority } from '../../../services/editor/common/editorResolverService.js';
 import { VirtualJSXEditorInput } from './CustomEditor/VirtualJSXEditorInput.js';
 import { VirtualJSXEditorPane } from './VirtualJSXEditorPane.js';
+import { initLvglModule } from "../../LVGL/module/maxgraph/lvgl/package/LvglModule.js";
 
 
 
@@ -19,6 +20,8 @@ export class VirtualJSXEditorContribution implements IWorkbenchContribution {
 		@IEditorResolverService editorResolverService: IEditorResolverService,
 		@IInstantiationService private readonly instantiationService: IInstantiationService,
 	) {
+		initLvglModule();
+
 		editorResolverService.registerEditor(
 			"*.jsx",
 
