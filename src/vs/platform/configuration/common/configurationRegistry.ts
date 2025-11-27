@@ -21,7 +21,8 @@ export enum EditPresentationTypes {
 }
 
 export const Extensions = {
-	Configuration: 'base.contributions.configuration'
+	Configuration: 'base.contributions.configuration',
+	Workbench: 'Workbench'
 };
 
 export interface IConfigurationDelta {

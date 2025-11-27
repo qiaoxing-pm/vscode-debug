@@ -1,0 +1,244 @@
+export enum addr_type_t {
+	ADDR_TYPE_NONE = 0x0,
+	ADDR_TYPE_LOCAL_BIT = 0x1,
+	ADDR_TYPE_LOCAL_WORD = 0x2,
+	ADDR_TYPE_MODBUS_BIT = 0x3,
+	ADDR_TYPE_MODBUS_WORD = 0x4,
+};
+
+export enum data_type_t {
+	DATA_TYPE_NONE = 0x0,
+	DATA_TYPE_UINT16 = 0x1,
+	DATA_TYPE_UINT32 = 0x2,
+	DATA_TYPE_INT16 = 0x3,
+	DATA_TYPE_INT32 = 0x4,
+	DATA_TYPE_FLOAT = 0x5,
+};
+
+
+export enum compare_type_t {
+	COMPARE_TYPE_EQUAL = 0x0,
+	COMPARE_TYPE_NOT_EQUAL = 0x1,
+	COMPARE_TYPE_GREATER = 0x2,
+	COMPARE_TYPE_LESS = 0x3,
+	COMPARE_TYPE_GREATER_EQUAL = 0x4,
+	COMPARE_TYPE_LESS_EQUAL = 0x5,
+};
+
+export enum lv_multifuncbutton_action_t {
+	LV_MULTIFUNCBUTTON_ACTION_NONE = 0x00,
+	LV_MULTIFUNCBUTTON_ACTION_SET_BIT = 0x01,
+	LV_MULTIFUNCBUTTON_ACTION_CLEAR_BIT = 0x02,
+	LV_MULTIFUNCBUTTON_ACTION_PULSE_BIT = 0x03,
+	LV_MULTIFUNCBUTTON_ACTION_TOGGLE_BIT = 0x04,
+	LV_MULTIFUNCBUTTON_ACTION_SET_VALUE = 0x05,
+	LV_MULTIFUNCBUTTON_ACTION_INPUT_VALUE = 0x06,
+	LV_MULTIFUNCBUTTON_ACTION_OPEN_SCREEN = 0x07,
+	LV_MULTIFUNCBUTTON_ACTION_LAST_SCREEN = 0x08,
+};
+
+export enum lv_multifuncbutton_state_t {
+	LV_MULTIFUNCBUTTON_STATE_NONE = 0x0,
+	LV_MULTIFUNCBUTTON_STATE_CLICKED = 0x1,
+	LV_MULTIFUNCBUTTON_STATE_PRESSING = 0x2,
+	LV_MULTIFUNCBUTTON_STATE_PRESSED = 0x3,
+	LV_MULTIFUNCBUTTON_STATE_RELEASED = 0x4,
+};
+
+export enum lv_bitbutton_action_t {
+	LV_BIT_BUTTION_SET_BIT = 0x0,
+	LV_BIT_BUTTION_CLEAR_BIT = 0x1,
+	LV_BIT_BUTTION_PULSE_BIT = 0x2,
+	LV_BIT_BUTTION_TOGGLE_BIT = 0x3,
+};
+
+export enum lv_bitbutton_state_t {
+	LV_BIT_BUTTON_STATE_NONE = 0x0,
+	LV_BIT_BUTTON_STATE_CLICKED = 0x1,
+	LV_BIT_BUTTON_STATE_PRESSING = 0x2,
+	LV_BIT_BUTTON_STATE_PRESSED = 0x3,
+	LV_BIT_BUTTON_STATE_RELEASED = 0x4,
+};
+
+export enum lv_wordbutton_action_t {
+	LV_WORD_BUTTON_SET_VALUE = 0x0,
+	LV_WORD_BUTTON_VALUE_INPUT = 0x01,
+	LV_WORD_BUTTON_PASSWD_INPUT = 0x02,
+	LV_WORD_BUTTON_VALUE_INCREASE = 0x03,
+	LV_WORD_BUTTON_VALUE_DECREASE = 0x04,
+	LV_WORD_BUTTON_VALUE_INCREASE_CYCLE = 0x05,
+	LV_WORD_BUTTON_VALUE_DECREASE_CYCLE = 0x06,
+};
+
+export enum lv_screenbutton_action_t {
+	LV_SCREENBUTTON_ACTION_NONE = 0x00,
+	LV_SCREENBUTTON_ACTION_OPEN_SCREEN = 0x01,
+	LV_SCREENBUTTON_ACTION_LAST_SCREEN = 0x02,
+};
+
+/* 管道形状枚举 */
+export enum lv_pipe_shape_t {
+	LV_PIPE_SHAPE_LINE,
+	LV_PIPE_SHAPE_ROUND,
+	LV_PIPE_SHAPE_T_SHAPE,
+	LV_PIPE_SHAPE_CROSS
+};
+
+export enum lv_qrdisplay_type_t {
+	LV_QR_DISPLAY_TYPE_ASCII = 0x0,
+	LV_QR_DISPLAY_TYPE_GB2312 = 0x1,
+};
+
+export enum lv_linescale_text_position_t {
+	LV_LINE_SCALE_TEXT_POSITION_TOP = 0x0,
+	LV_LINE_SCALE_TEXT_POSITION_BOTTOM = 0x1,
+	LV_LINE_SCALE_TEXT_POSITION_LEFT = 0x3,
+	LV_LINE_SCALE_TEXT_POSITION_RIGHT = 0x4
+};
+
+export enum lv_linescale_text_direction_t {
+	LV_LINE_SCALE_TEXT_DIRECTION_TOP = 0x0,
+	LV_LINE_SCALE_TEXT_DIRECTION_BOTTOM = 0x1,
+	LV_LINE_SCALE_TEXT_DIRECTION_LEFT = 0x3,
+	LV_LINE_SCALE_TEXT_DIRECTION_RIGHT = 0x4
+};
+
+
+
+
+/* 管道形状枚举 */
+export enum lv_flowblock_shape_t {
+	LV_FLOWBLOCK_SHAPE_LINE,
+	LV_FLOWBLOCK_SHAPE_ROUND,
+	LV_FLOWBLOCK_SHAPE_T_SHAPE,
+	LV_FLOWBLOCK_SHAPE_CROSS
+};
+
+export enum lv_flowblock_port_t {
+	LV_FLOWBLOCK_PORT_NONE = 0x00,   // 无
+	LV_FLOWBLOCK_PORT_LEFT = 0x01,   // 左口
+	LV_FLOWBLOCK_PORT_RIGHT = 0x02,   // 右口
+	LV_FLOWBLOCK_PORT_DOWN = 0x04,   // 上口
+	LV_FLOWBLOCK_PORT_UP = 0x08,   // 下口
+};
+
+export enum lv_movetrack_dir_t {
+	LV_MOVETRACK_DIR_LEFT = 0x00,
+	LV_MOVETRACK_DIR_RIGHT = 0x01,
+	LV_MOVETRACK_DIR_UP = 0x02,
+	LV_MOVETRACK_DIR_DOWN = 0x03,
+};
+
+export enum lv_sliderswitch_dir_t {
+	LV_SLIDERSWITCH_DIR_LEFT = 0x00,
+	LV_SLIDERSWITCH_DIR_RIGHT = 0x01,
+	LV_SLIDERSWITCH_DIR_UP = 0x02,
+	LV_SLIDERSWITCH_DIR_DOWN = 0x03,
+};
+
+export enum lv_multibutton_action_t {
+	LV_MULTI_BUTTON_VALUE_INPUT = 0x00,
+	LV_MULTI_BUTTON_VALUE_INCREASE = 0x01,
+	LV_MULTI_BUTTON_VALUE_DECREASE = 0x02,
+	LV_MULTI_BUTTON_VALUE_INCREASE_CYCLE = 0x03,
+	LV_MULTI_BUTTON_VALUE_DECREASE_CYCLE = 0x04,
+	LV_MULTI_BUTTON_VALUE_RETAIN = 0x05,
+};
+
+export enum trendchart_direction_t {
+	LV_TRENDCHART_LEFT_TO_RIGHT = 0x01,
+	LV_TRENDCHART_RIGHT_TO_LEFT = 0x02,
+};
+
+export enum sampling_mode_t {
+	LV_DATAGROUP_VALUE_SAMPLING = 0x01,
+	LV_DATAGROUP_ADDR_SAMPLING = 0x02,
+};
+
+export enum range_type_t {
+	LV_DATAGROUP_VALUE_RANGE = 0x01,
+	LV_DATAGROUP_ADDR_RANGE = 0x02,
+};
+
+export enum ring_type_t {
+	LV_RING_TYPE_RING = 0x0,
+	LV_RING_TYPE_ARC = 0x1,
+};
+
+export enum lv_roller_mode_t {
+	LV_ROLLER_MODE_NORMAL, /**< Normal mode (roller ends at the end of the options).*/
+	LV_ROLLER_MODE_INFINITE, /**< Infinite mode (roller can be scrolled forever).*/
+};
+
+export { lv_dir_t } from "../../lvgl/package/lvglEnums.js"
+export { lv_text_align_t } from "../../lvgl/package/lvglEnums.js"
+export { lv_text_decor_t } from "../../lvgl/package/lvglEnums.js"
+
+export enum lv_textmonitor_style_t {
+	LV_TEXT_MONITOR_STYLE_NONE = 0x00,
+	LV_TEXT_MONITOR_STYLE_BG = 0x01,
+	LV_TEXT_MONITOR_STYLE_HORZ_GRAD = 0x02,
+	LV_TEXT_MONITOR_STYLE_VERT_GRAD = 0x03,
+};
+
+export enum lv_timemonitor_date_style_t {
+	LV_TIME_MONITOR_DATE_STYLE0 = 0x00,   // "YYYY/MM/DD"
+	LV_TIME_MONITOR_DATE_STYLE1 = 0x01,   // "YYYY.MM.DD"
+	LV_TIME_MONITOR_DATE_STYLE2 = 0x02,   // "YYYY-MM-DD"
+	LV_TIME_MONITOR_DATE_STYLE3 = 0x03,   // "MM/DD/YYYY"
+	LV_TIME_MONITOR_DATE_STYLE4 = 0x04,   // "MM.DD.YYYY"
+	LV_TIME_MONITOR_DATE_STYLE5 = 0x05,   // "MM-DD-YYYY"
+	LV_TIME_MONITOR_DATE_STYLE6 = 0x06,   // "DD/MM/YYYY"
+	LV_TIME_MONITOR_DATE_STYLE7 = 0x07,   // "DD.MM.YYYY"
+	LV_TIME_MONITOR_DATE_STYLE8 = 0x08,   // "DD-MM-YYYY"
+};
+
+export enum lv_timemonitor_time_style_t {
+	LV_TIME_MONITOR_TIME_STYLE0 = 0x00, // HH:MM
+	LV_TIME_MONITOR_TIME_STYLE1 = 0x01, // HH:MM:SS
+	LV_TIME_MONITOR_TIME_STYLE2 = 0x02, // HH-MM
+	LV_TIME_MONITOR_TIME_STYLE3 = 0x03, // HH-MM-SS
+};
+
+export enum lv_asciimonitor_type_t {
+	LV_ASCIIMONITOR_TYPE_ASCII = 0x00,
+	LV_ASCIIMONITOR_TYPE_GB2312 = 0x01,
+};
+
+
+export enum lv_nummonitor_type_t {
+	LV_NUMMONITOR_TYPE_NONE = 0x00,
+	LV_NUMMONITOR_TYPE_VALUE = 0x01,
+	LV_NUMMONITOR_TYPE_ADDR = 0x02,
+};
+
+export enum lv_gauge_display_direction_t {
+	LV_GAUGE_DISPLAY_DIR_CLOCKWISE = 0x0,
+	LV_GAUGE_DISPLAY_DIR_COUNTERCLOCKWISE = 0x1,
+};
+
+export enum lv_gauge_shape_t {
+	LV_GAUGE_SHAPE1 = 0x0, //半圆指针左
+	LV_GAUGE_SHAPE2 = 0x1, //全圆指针上
+	LV_GAUGE_SHAPE3 = 0x2, //全圆指针右
+	LV_GAUGE_SHAPE4 = 0x3, //四分之三圆指针左下
+};
+
+export enum lv_gauge_pointer_type_t {
+	LV_GAUGE_THIN_LINE = 0x0,
+	LV_GAUGE_THICK_LINE = 0x1,
+	LV_GAUGE_POINTER = 0x2,
+};
+
+
+export enum lv_custombar_direction_t {
+	LV_CUSTOMBAR_FORWARD = 0x0,
+	LV_CUSTOMBAR_REVERSE = 0x1,
+};
+
+export enum lv_imagemonitor_type_t {
+	LV_IMAGE_MONITOR_NONE = 0x00,
+	LV_IMAGE_MONITOR_TIME = 0x01,
+	LV_IMAGE_MONITOR_WORD = 0x02,
+	LV_IMAGE_MONITOR_BIT = 0x03,
+};

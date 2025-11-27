@@ -1,0 +1,1 @@
+export const hmi_widget_group = [];

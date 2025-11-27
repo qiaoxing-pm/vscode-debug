@@ -51,3 +51,9 @@ process.on('unhandledRejection', (reason, p) => {
 // Load all the gulpfiles only if running tasks other than the editor tasks
 require('glob').sync('gulpfile.*.js', { cwd: __dirname })
 	.forEach(f => require(`./${f}`));
+
+
+// gulp.task('copy-wasm', () => {
+// 	return gulp.src('vs/workbench/contrib/LVGL/lib/wasm/*.wasm')
+// 		.pipe(gulp.dest('out/vs/workbench/contrib/LVGL/lib/wasm'));
+// });

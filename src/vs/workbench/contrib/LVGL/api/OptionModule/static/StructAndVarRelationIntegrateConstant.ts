@@ -1,4 +1,3 @@
-// import constant from "@/api/constant/index"
 import constant from '../../ConstantModule/ConstantModule.js'
 import { type optionType } from "../../../type/type.js"
 

@@ -158,6 +158,14 @@ export class ExtUri implements IExtUri {
 	}
 
 	getComparisonKey(uri: URI, ignoreFragment: boolean = false): string {
+		// console.log("uri", uri.with({
+		// 	path: this._ignorePathCasing(uri) ? uri.path.toLowerCase() : undefined,
+		// 	fragment: ignoreFragment ? null : undefined
+		// }).toString())
+
+		if (!uri.with) {
+			return ""
+		}
 		return uri.with({
 			path: this._ignorePathCasing(uri) ? uri.path.toLowerCase() : undefined,
 			fragment: ignoreFragment ? null : undefined

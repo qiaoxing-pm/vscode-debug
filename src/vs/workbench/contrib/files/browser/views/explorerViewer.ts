@@ -28,6 +28,8 @@ import { IKeyboardEvent } from '../../../../../base/browser/keyboardEvent.js';
 import { equals, deepClone } from '../../../../../base/common/objects.js';
 import * as path from '../../../../../base/common/path.js';
 import { ExplorerItem, NewExplorerItem } from '../../common/explorerModel.js';
+import { VIRTUAL_NODE_TEMPLATE_ID, VirtualNode } from "./VirtualJSXNode.js"
+import { isCustomFile, parseJSX } from "./util.js";
 import { compareFileExtensionsDefault, compareFileNamesDefault, compareFileNamesUpper, compareFileExtensionsUpper, compareFileNamesLower, compareFileExtensionsLower, compareFileNamesUnicode, compareFileExtensionsUnicode } from '../../../../../base/common/comparers.js';
 import { CodeDataTransfers, containsDragType } from '../../../../../platform/dnd/browser/dnd.js';
 import { fillEditorsDragData } from '../../../../browser/dnd.js';
@@ -84,6 +86,9 @@ export class ExplorerDelegate implements IListVirtualDelegate<ExplorerItem> {
 	}
 
 	getTemplateId(element: ExplorerItem): string {
+		if (element instanceof VirtualNode) {
+			return VIRTUAL_NODE_TEMPLATE_ID;
+		}
 		return FilesRenderer.ID;
 	}
 }
@@ -112,12 +117,36 @@ export class ExplorerDataSource implements IAsyncDataSource<ExplorerItem | Explo
 		throw new Error('getParent only supported for cached parents');
 	}
 
-	hasChildren(element: ExplorerItem | ExplorerItem[]): boolean {
-		// don't render nest parents as containing children when all the children are filtered out
+	hasChildren(element: VirtualNode | ExplorerItem | ExplorerItem[]): boolean {
+
+		// 虚拟节点没有子元素
+		if (element instanceof VirtualNode) {
+			return false;
+		}
+
+
+		// 是自定义子节点
+		if (isCustomFile(element)) {
+			return true;
+		}
+
 		return Array.isArray(element) || element.hasChildren((stat) => this.fileFilter.filter(stat, TreeVisibility.Visible));
 	}
 
+
+
+
+
 	getChildren(element: ExplorerItem | ExplorerItem[]): ExplorerItem[] | Promise<ExplorerItem[]> {
+
+		// 是我们自定义的拓展文件
+		if (isCustomFile(element)) {
+			const customNodes = parseJSX(element as ExplorerItem);
+			return [
+				...customNodes
+			];
+		}
+
 		if (Array.isArray(element)) {
 			return element;
 		}
@@ -167,6 +196,84 @@ export class ExplorerDataSource implements IAsyncDataSource<ExplorerItem | Explo
 
 		return promise;
 	}
+
+
+
+
+
+
+	// getChildren(element: ExplorerItem | ExplorerItem[]): ExplorerItem[] | Promise<ExplorerItem[]> {
+	// 	console.log(element);
+
+	// 	if (Array.isArray(element)) {
+	// 		return element;
+	// 	}
+
+	// 	if (this.findProvider.isShowingFilterResults()) {
+	// 		return Array.from(element.children.values());
+	// 	}
+
+	// 	const hasError = element.error;
+	// 	const sortOrder = this.explorerService.sortOrderConfiguration.sortOrder;
+	// 	const children = element.fetchChildren(sortOrder);
+
+	// 	const addVirtualPlcChildren = (realChildren: ExplorerItem[]) => {
+	// 		// ⭐ 针对 .plcdok 文件添加虚拟节点
+	// 		if (element.resource?.path.endsWith(".jsx")) {
+	// 			realChildren.push(...this.parseJSX());
+	// 		}
+	// 		return realChildren;
+	// 	};
+
+	// 	if (Array.isArray(children)) {
+	// 		// 同步返回子节点
+	// 		return addVirtualPlcChildren(children);
+	// 	}
+
+	// 	// 异步返回子节点
+	// 	const promise = children.then(
+	// 		(children) => {
+	// 			// 清理错误
+	// 			if (element instanceof ExplorerItem && element.isRoot && !element.error && hasError && this.contextService.getWorkbenchState() !== WorkbenchState.FOLDER) {
+	// 				explorerRootErrorEmitter.fire(element.resource);
+	// 			}
+
+	// 			return addVirtualPlcChildren(children);
+	// 		},
+	// 		(e) => {
+	// 			// 错误处理
+	// 			if (element instanceof ExplorerItem && element.isRoot) {
+	// 				if (this.contextService.getWorkbenchState() === WorkbenchState.FOLDER) {
+	// 					const placeholder = new ExplorerItem(element.resource, this.fileService, this.configService, this.filesConfigService, undefined, undefined, false);
+	// 					placeholder.error = e;
+	// 					return [placeholder];
+	// 				} else {
+	// 					explorerRootErrorEmitter.fire(element.resource);
+	// 				}
+	// 			} else {
+	// 				this.notificationService.error(e);
+	// 			}
+
+	// 			return [];
+	// 		}
+	// 	);
+
+	// 	this.progressService.withProgress({
+	// 		location: ProgressLocation.Explorer,
+	// 		delay: this.layoutService.isRestored() ? 800 : 1500
+	// 	}, _progress => promise);
+
+	// 	return promise;
+	// }
+
+
+
+
+
+
+
+
+
 }
 
 export class PhantomExplorerItem extends ExplorerItem {
@@ -886,6 +993,7 @@ export class FilesRenderer implements ICompressibleTreeRenderer<ExplorerItem, Fu
 	}
 
 	renderTemplate(container: HTMLElement): IFileTemplateData {
+
 		const templateDisposables = new DisposableStore();
 		const label = templateDisposables.add(this.labels.create(container, { supportHighlights: true }));
 		templateDisposables.add(label.onDidRender(() => {
@@ -1390,6 +1498,11 @@ export class FilesFilter implements ITreeFilter<ExplorerItem, FuzzyScore> {
 
 	filter(stat: ExplorerItem, parentVisibility: TreeVisibility): boolean {
 		// Add newly visited .gitignore files to the ignore tree
+
+		if (stat instanceof VirtualNode) {
+			return true;
+		}
+
 		if (stat.name === '.gitignore' && this.ignoreTreesPerRoot.has(stat.root.resource.toString())) {
 			this.processIgnoreFile(stat.root.resource.toString(), stat.resource, false);
 			return true;

@@ -1,0 +1,41 @@
+const hmiWidgets = [
+  "asciimonitor",
+  "bitbutton",
+  "custombar",
+  "datagroup",
+  "flowblock",
+  "gauge",
+  "functionbutton",
+  "imagemonitor",
+  "linescale",
+  "multifuncbutton",
+  "xycurve",
+  "wordbutton",
+  "trendchart",
+  "timemonitor",
+  "textmonitor",
+  "sliderswitch",
+  "rollermonitor",
+  "ring",
+  "ringchart",
+  "qrcode",
+  "qrdisplay",
+  "movetrail",
+  "movetrack",
+  "sliderswitch",
+  "screenbutton",
+  "rollermonitor",
+  "optionlist",
+  "gifmonitor",
+  "textmonitor",
+  "timemonitor",
+  "asciimonitor",
+  "nummonitor",
+  "screenbutton",
+  "multibutton",
+  "ledbutton"
+]
+
+export default function isHMIWidget(name: string): boolean {
+  return hmiWidgets.includes(name.toLowerCase());
+};

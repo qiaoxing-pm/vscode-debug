@@ -109,7 +109,7 @@ import type { Node } from "../api/type.js";
 import { ProjectTreeDataSource, NodeRenderer, NodeDelegate } from '../api/class.js';
 import { ExplorerView } from '../../../../files/browser/views/explorerView.js';
 import { IViewsService } from '../../../../../services/views/common/viewsService.js';
-
+import createLvglGraph from "../../maxgraph/lvgl/events/createLvglCanvas.js"
 export class projectView extends ViewPane {
 
 	private tree!: WorkbenchAsyncDataTree<null, Node>;
@@ -135,7 +135,7 @@ export class projectView extends ViewPane {
 	}
 
 	protected override renderBody(container: HTMLElement): void {
-		container.appendChild(this.createBtn("asd"));
+		// container.appendChild(this.createBtn("asd"));
 
 	}
 	async getExplorerData() {
@@ -171,7 +171,6 @@ export class projectView extends ViewPane {
 			// 	explore.tree.refresh();
 			// }
 		});
-
 
 		// console.log(container);
 	}

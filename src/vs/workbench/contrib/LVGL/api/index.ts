@@ -8,6 +8,8 @@ import VariableModule from "./VariableModule/VariableModule.js";
 import MaxGraphModule from './MaxGraphModule/MaxGraphModule.js';
 import command from "./command.js";
 import PopUpModule from './PopUpModule/PopUpModule.js';
+import HttpsModule from "./HttpsModule/HttpsModule.js";
+
 
 export type ApiModuleImpl = {
 	init?: (api: ApiInterface) => void;
@@ -24,6 +26,7 @@ export interface ApiInterface {
 	typeOption: typeof TypeOptionModule;
 	maxGraph: typeof MaxGraphModule;
 	popUp: typeof PopUpModule;
+	https: typeof HttpsModule;
 
 
 	// Message: typeof MessageModule;
@@ -42,6 +45,7 @@ class API<T extends Record<string, ApiModuleImpl> = {}>
 	typeOption: typeof TypeOptionModule = TypeOptionModule;
 	maxGraph: typeof MaxGraphModule = MaxGraphModule;
 	popUp: typeof PopUpModule = PopUpModule;
+	https: typeof HttpsModule = HttpsModule;
 	// message: typeof MessageModule = MessageModule;
 
 	constructor() { }
@@ -61,3 +65,16 @@ let api = new API();
 api.init();
 
 export default api;
+
+export {
+	ConstanttModule,
+	EventBusModule,
+	OptionModule,
+	TypeOptionModule,
+	StructAndVarRelationIntegrateModule,
+	StructureModule,
+	VariableModule,
+	MaxGraphModule,
+	HttpsModule,
+
+}

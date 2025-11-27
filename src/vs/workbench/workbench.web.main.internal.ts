@@ -82,6 +82,9 @@ import "./contrib/LVGL/module/assert/browser/assert.contribution.js";
 // import "./contrib/LVGL/old/architect/browser/architect.contribution.js";
 import "./contrib/LVGL/module/propWidget/browser/propWidget.contribution.js";
 import "./contrib/LVGL/module/project/browser/project.contribution.js";
+//#region LVGL 自定义Editor面板
+import './contrib/jsx/browser/VirtualJSXResolver.contribution.js';
+
 
 
 import { InstantiationType, registerSingleton } from '../platform/instantiation/common/extensions.js';

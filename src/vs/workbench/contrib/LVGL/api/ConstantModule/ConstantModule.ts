@@ -7,6 +7,7 @@ import optionModulePublicOptions from "./optionModulePublicOptions.js";
 import structAndVarRelationConstants from "./structAndVarRelationConstants.js";
 import structAndVarRelations from "./structAndVarRelations.js";
 import structAndVarRelationExcels from "./structAndVarRelationExcels.js"
+import maxgraph from "./maxgraph.js"
 
 
 const constant = {
@@ -18,6 +19,7 @@ const constant = {
 	structAndVarRelationConstants,
 	structAndVarRelations,
 	structAndVarRelationExcels,
+	maxgraph,
 };
 
 export default constant;
