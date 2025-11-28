@@ -19,6 +19,7 @@ import { IHoverService } from "../../../../../../platform/hover/browser/hover.js
 
 import { WorkbenchList } from '../../../../../../platform/list/browser/listService.js';
 import { CollapsedNodeDelegate, CollapsibleListRenderer, widgetListGroup, widgetListNode } from '../api/class.js';
+import api from '../../../api/index.js';
 
 
 
@@ -57,16 +58,17 @@ export class WidgetListView extends ViewPane {
 			type: 'folder',
 			imgElement: {
 				imgData: [
-					{ label: 'container', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/container.png" },
+					{ label: 'obj', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/container.png" },
 					{ label: 'arc', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/arc.png" },
 					{ label: 'button', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/button.png" },
 					{ label: 'image', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/image.png" },
-					{ label: 'image', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/image.png" },
+					{ label: 'player', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/image.png" },
 					{ label: 'label', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/label.png" },
-					{ label: 'tabpage', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/tabpage.png" },
-					{ label: 'tabpage', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/tabpage.png" },
+					{ label: 'list', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/tabpage.png" },
+					{ label: 'multistateimage', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/tabpage.png" },
 					{ label: 'tabview', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/tabview.png" },
 					{ label: 'textarea', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/textarea.png" },
+					{ label: 'multistatetext', imgUrl: "http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/images/basics/textarea.png" },
 				]
 			}
 		},
@@ -135,6 +137,24 @@ export class WidgetListView extends ViewPane {
 		treeContainer.style.display = 'flex';
 		container.appendChild(treeContainer);
 
+		treeContainer.addEventListener('dragstart', (e: DragEvent) => {
+			const emptyImg = document.createElement('div');
+			emptyImg.style.width = '0px';
+			emptyImg.style.height = '0px';
+			e.dataTransfer?.setDragImage(emptyImg, 0, 0);
+		});
+
+		treeContainer.addEventListener('drag', (e: DragEvent) => {
+			console.log('拖拽中', e.clientX, e.clientY);
+		});
+
+		treeContainer.addEventListener('dragend', (e: DragEvent) => {
+			console.log('拖拽结束', e.clientX, e.clientY);
+			api.eventBus.emit('widgetList_drag_end', {
+				x: e.clientX,
+				y: e.clientY
+			})
+		});
 		const render = new CollapsibleListRenderer();
 
 		this.list = this.instantiationService.createInstance(WorkbenchList<widgetListGroup | widgetListNode>,
@@ -148,6 +168,12 @@ export class WidgetListView extends ViewPane {
 				horizontalScrolling: false,
 				alwaysConsumeMouseWheel: false,
 				openOnSingleClick: true,
+				dnd: {
+					getDragURI: () => null, // 返回 null 表示不允许拖拽
+					onDragOver: () => false, // 不允许拖拽悬停
+					drop: () => { }, // 不执行 drop
+					dispose: () => { }, // 可选，但接口要求实现 IDisposable
+				},
 				accessibilityProvider: {
 					getAriaLabel: (element) => {
 						return 'element';

@@ -81,21 +81,7 @@ export default function createLvglGraph(container: HTMLDivElement, canvas: HTMLC
 	usePopupMenu(graph, screen, graph.undoManager, rpcProvider);
 	InternalEvent.disableContextMenu(container);
 	registerLvglShape();
-	graph.insertVertex(
-		graph.getDefaultParent(),
-		null,
-		null,
-		100,
-		100,
-		100,
-		100,
-		{
-			shape: "lvgl_" + "arc",
-			screen: graph.screen.screenObj,
-			// polyCoords: rect.points.map((p) => new Point(p.x, p.y)),
-			// foldable: false,
-		},
-	);
+
 	// graph.setEventsEnabled
 	return graph;
 }
@@ -104,6 +90,7 @@ export function switchGraph(curGraph: LvglGraph, newGraph: LvglGraph) {
 	if (curGraph === newGraph) {
 		return null;
 	}
+	console.log(curGraph.screen, newGraph.screen)
 	switchScreen(curGraph.screen, newGraph.screen);
 	Module.ctx = newGraph.screen.canvas.getContext("2d") as CanvasRenderingContext2D;
 	const selectionModel = curGraph.getSelectionModel();

@@ -610,3 +610,20 @@ export const deepClone = <T>(data: T): T => {
 
 	return clone(data) as T;
 };
+
+
+
+/**
+ * 判断点是否在矩形范围内
+ * @param rect DOMRect 或者包含 left, top, right, bottom 的对象
+ * @param point { x, y } 鼠标或触摸位置
+ * @returns boolean
+ */
+export function isPointInRect(rect: DOMRect, point: { x: number; y: number }): boolean {
+	return (
+		point.x >= rect.left &&
+		point.x <= rect.right &&
+		point.y >= rect.top &&
+		point.y <= rect.bottom
+	);
+}

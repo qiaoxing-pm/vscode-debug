@@ -31,62 +31,75 @@ export function createHMIWidget(graph: LvglGraph, screen: LvObjT) {
 	const dp = graph.getDefaultParent();
 	let parent = dp;
 	graph.batchUpdate(() => {
-		let v1 = new BitButton(new Geometry(200, 200, 100, 50), screen);
+		let v1 = new BitButton(new Geometry(0, 0, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new QRCode(new Geometry(160, 0, 100, 50), screen);
+		v1 = new QRCode(new Geometry(105, 0, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new FlowBlock(new Geometry(160, 60, 100, 50), screen);
+		v1 = new FlowBlock(new Geometry(210, 0, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new Roller(new Geometry(270, 0, 100, 50), screen);
+		v1 = new Roller(new Geometry(315, 0, 100, 50), screen);
+		graph.addCell(v1, parent);
+		v1 = new TimeMonitor(new Geometry(420, 0, 100, 50), screen);
 		graph.addCell(v1, parent);
 
-		v1 = new TimeMonitor(new Geometry(270, 120, 100, 50), screen);
+		v1 = new NumberDisplayer(new Geometry(0, 55, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new NumberDisplayer(new Geometry(390, 0, 100, 50), screen);
+		v1 = new XYCurve(new Geometry(105, 55, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new XYCurve(new Geometry(520, 80, 200, 200), screen);
+		v1 = new DataGroup(new Geometry(210, 55, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new DataGroup(new Geometry(420, 550, 200, 200), screen);
+		v1 = new RingChart(new Geometry(315, 55, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new RingChart(new Geometry(210, 550, 200, 200), screen);
+		v1 = new TrendChart(new Geometry(420, 55, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new TrendChart(new Geometry(290, 180, 200, 200), screen);
+
+		v1 = new LedButton(new Geometry(0, 110, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new LedButton(new Geometry(500, 280, 100, 50), screen);
+		v1 = new ScreenButton(new Geometry(105, 110, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new ScreenButton(new Geometry(500, 340, 100, 50), screen);
+		v1 = new MultiButton(new Geometry(210, 110, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new MultiButton(new Geometry(500, 400, 100, 50), screen);
+		v1 = new ASCIIDisplayer(new Geometry(315, 110, 100, 50), screen);
 		graph.addCell(v1, parent);
-		// v1 = new ScreenButton(new Geometry(500, 340, 100, 50), screen);
-		// graph.addCell(v1, parent);
-		v1 = new ASCIIDisplayer(new Geometry(500, 0, 100, 50), screen);
+		v1 = new FunctionButton(new Geometry(420, 110, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new FunctionButton(new Geometry(380, 60, 100, 50), screen);
+
+		v1 = new MultiFuncButton(new Geometry(0, 165, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new MultiFuncButton(new Geometry(380, 120, 100, 50), screen);
+		v1 = new WordButton(new Geometry(105, 165, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new WordButton(new Geometry(100, 100, 100, 100), screen);
+		v1 = new MoveTrack(new Geometry(210, 165, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new MoveTrack(new Geometry(0, 0, 100, 100), screen);
+		v1 = new LineScale(new Geometry(315, 165, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new LineScale(new Geometry(740, 20, 100, 200), screen);
+		v1 = new Roller(new Geometry(420, 165, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new Roller(new Geometry(0, 150, 100, 100), screen);
+
+		v1 = new OptionList(new Geometry(0, 220, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new OptionList(new Geometry(160, 300, 100, 30), screen);
+		v1 = new Gauge(new Geometry(105, 220, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new Gauge(new Geometry(10, 300, 100, 100), screen);
+		v1 = new ImageMonitor(new Geometry(210, 220, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new ImageMonitor(new Geometry(0, 390, 150, 150), screen);
+		v1 = new GIFMonitor(new Geometry(315, 220, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new GIFMonitor(new Geometry(160, 390, 150, 150), screen);
+		v1 = new GIFMonitor(new Geometry(420, 220, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new GIFMonitor(new Geometry(330, 390, 150, 150), screen);
+
+		v1 = new CustomBar(new Geometry(0, 275, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new CustomBar(new Geometry(0, 550, 200, 200), screen);
+		v1 = new SlideSwitch(new Geometry(105, 275, 100, 50), screen);
 		graph.addCell(v1, parent);
-		v1 = new SlideSwitch(new Geometry(50, 780, 200, 30), screen);
+		v1 = new MoveTrack(new Geometry(210, 275, 100, 50), screen);
+		graph.addCell(v1, parent);
+		v1 = new LineScale(new Geometry(315, 275, 100, 50), screen);
+		graph.addCell(v1, parent);
+		v1 = new Roller(new Geometry(420, 275, 100, 50), screen);
 		graph.addCell(v1, parent);
 	});
+
+
+
+
+
 }

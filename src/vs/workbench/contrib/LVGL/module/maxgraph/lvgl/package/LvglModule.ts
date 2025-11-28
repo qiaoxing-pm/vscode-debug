@@ -112,7 +112,6 @@ export function createNewScreen(name: string, w: number, h: number): LvScreen {
 	canvas.style.left = "0px";
 	canvas.style.zIndex = "0";
 	canvas.style.border = "1px solid transparent";
-	console.log("Module", Module)
 	const disp = Module.createNewScreen("lxq", w, h);
 
 	const screen = {

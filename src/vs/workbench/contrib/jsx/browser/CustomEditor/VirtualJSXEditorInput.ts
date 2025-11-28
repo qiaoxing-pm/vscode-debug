@@ -7,7 +7,6 @@ import { EditorInput } from '../../../../common/editor/editorInput.js';
 export class VirtualJSXEditorInput extends EditorInput {
 	static readonly ID = 'workbench.editorinputs.virtualJsx';
 	readonly typeId = 'virtualJSXEditorInput'; // 唯一标识符
-	// readonly resource: URI | undefined;
 
 	private model: ITextModel | undefined;
 
@@ -19,7 +18,6 @@ export class VirtualJSXEditorInput extends EditorInput {
 		@IModelService private readonly modelService: IModelService,
 	) {
 		super();
-		// this.resource = resource;
 	}
 
 	getTypeId(): string {
@@ -35,11 +33,6 @@ export class VirtualJSXEditorInput extends EditorInput {
 	}
 
 	override async resolve(): Promise<any> {
-		// if (!this.model) {
-		// 	this.model = this.modelService.createModel(this.content, 'javascript', undefined);
-		// }
-		// return this.model;
-
 		return {
 			content: this.content,
 			resource: this.resource

@@ -9,6 +9,8 @@ import { IEditorResolverService, RegisteredEditorPriority } from '../../../servi
 import { VirtualJSXEditorInput } from './CustomEditor/VirtualJSXEditorInput.js';
 import { VirtualJSXEditorPane } from './VirtualJSXEditorPane.js';
 import { initLvglModule } from "../../LVGL/module/maxgraph/lvgl/package/LvglModule.js";
+import { ITextModelService } from '../../../../editor/common/services/resolverService.js';
+import { IModelService } from '../../../../editor/common/services/model.js';
 
 
 
@@ -19,11 +21,13 @@ export class VirtualJSXEditorContribution implements IWorkbenchContribution {
 	constructor(
 		@IEditorResolverService editorResolverService: IEditorResolverService,
 		@IInstantiationService private readonly instantiationService: IInstantiationService,
+		@ITextModelService private readonly textModelService: ITextModelService,
+		@IModelService private readonly modelService: IModelService
 	) {
 		initLvglModule();
 
 		editorResolverService.registerEditor(
-			"*.jsx",
+			"*.hmi",
 
 			{
 				id: 'virtualJSX.editor',
@@ -32,16 +36,17 @@ export class VirtualJSXEditorContribution implements IWorkbenchContribution {
 			},
 			{
 				canSupportResource: (resource: URI) => {
-					return resource.path.endsWith('.jsx');
+					return resource.path.endsWith('.hmi');
 				},
 			},
 			{
 				createEditorInput: async ({ resource, options }) => {
+					const fileData = await this.resolve(resource);
 					const editorInput = this.instantiationService.createInstance(
 						VirtualJSXEditorInput,
-						resource,
-						resource.toString(),
-						'sdfsdfgsdfg'
+						fileData.resource,
+						fileData.title,
+						fileData.content,
 					);
 
 					return {
@@ -51,6 +56,28 @@ export class VirtualJSXEditorContribution implements IWorkbenchContribution {
 				}
 			},
 		);
+	}
+
+
+
+	/**
+ * 获取文件原始内容
+ */
+	async resolve(resource: URI): Promise<{ content: string; resource: URI; title: string }> {
+		let model = this.modelService.getModel(resource);
+
+
+		if (!model) {
+			// 如果 model 不存在，创建一个
+			const reference = await this.textModelService.createModelReference(resource);
+			model = reference.object.textEditorModel;
+		}
+
+		return {
+			content: model.getValue(), // 文件原始文本
+			title: resource.path.split('/').pop() as string,
+			resource: resource
+		};
 	}
 }
 
