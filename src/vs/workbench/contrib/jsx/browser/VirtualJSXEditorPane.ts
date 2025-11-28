@@ -11,7 +11,7 @@ import { URI } from '../../../../base/common/uri.js';
 import { createNewScreen, initLvglModule } from "../../LVGL/module/maxgraph/lvgl/package/LvglModule.js";
 import createLvglGraph from "../../LVGL/module/maxgraph/lvgl/events/createLvglCanvas.js"
 import RpcProvider from "../../LVGL/lib/worker-rpc/lib/RpcProvider.js";
-
+import { createHMIWidget } from "../../LVGL/module/maxgraph/hmi/testHmi.js"
 export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 	static readonly ID = 'workbench.pane.virtualJSXEditor';
 	private container!: HTMLElement;
@@ -84,5 +84,7 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 			window.postMessage(m, "*", t)
 		);
 		const graph = createLvglGraph(containerDiv, canvas, screen, rpcProvider)
+
+		createHMIWidget(graph, screen.screenObj);
 	}
 }
