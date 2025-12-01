@@ -20,6 +20,8 @@ import { IHoverService } from "../../../../../../platform/hover/browser/hover.js
 import { WorkbenchList } from '../../../../../../platform/list/browser/listService.js';
 import { CollapsedNodeDelegate, CollapsibleListRenderer, widgetListGroup, widgetListNode } from '../api/class.js';
 import api from '../../../api/index.js';
+import { imgData } from "../api/constant.js";
+
 
 
 
@@ -145,11 +147,10 @@ export class WidgetListView extends ViewPane {
 		});
 
 		treeContainer.addEventListener('drag', (e: DragEvent) => {
-			console.log('拖拽中', e.clientX, e.clientY);
+			api.eventBus.emit("widgetList_draging", { e });
 		});
 
 		treeContainer.addEventListener('dragend', (e: DragEvent) => {
-			console.log('拖拽结束', e.clientX, e.clientY);
 			api.eventBus.emit('widgetList_drag_end', {
 				x: e.clientX,
 				y: e.clientY
@@ -184,12 +185,12 @@ export class WidgetListView extends ViewPane {
 		);
 
 		render.onToggle = () => {
-			const flatList = this.buildFlattenedList(this.items);
+			const flatList = this.buildFlattenedList(imgData);
 			if (this.list) {
 				this.list.splice(0, this.list.length, flatList);
 			}
 		};
-		this.list.splice(0, this.items.length, this.items);
+		this.list.splice(0, imgData.length, imgData);
 	}
 
 

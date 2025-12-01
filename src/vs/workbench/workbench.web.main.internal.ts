@@ -83,7 +83,7 @@ import "./contrib/LVGL/module/assert/browser/assert.contribution.js";
 import "./contrib/LVGL/module/propWidget/browser/propWidget.contribution.js";
 import "./contrib/LVGL/module/project/browser/project.contribution.js";
 //#region LVGL 自定义Editor面板
-import './contrib/jsx/browser/VirtualJSXResolver.contribution.js';
+import './contrib/LVGL/module/maxgraph/vscodeEditor/browser/VirtualJSXResolver.contribution.js';
 
 
 

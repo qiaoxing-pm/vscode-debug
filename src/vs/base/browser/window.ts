@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import '../../workbench/contrib/LVGL/lib/PropertyInput.iife.js';
 import '../../workbench/contrib/LVGL/lib/index.iife.js';
-// import "../../workbench/contrib/LVGL/lib/propWidget/index.iife.js"
+import "../../workbench/contrib/LVGL/lib/propWidget/index.iife.js"
 // import "../../workbench/contrib/LVGL/lib/propWidget.iife.js"
 // import api from "../../workbench/contrib/LVGL/api/index.js";
 

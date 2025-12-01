@@ -51,10 +51,9 @@ export class propWidgetView extends ViewPane {
 
 
 	protected override renderBody(container: HTMLElement): void {
-		// const controlVariablesDom = this.propWidget();
+		const controlVariablesDom = this.propWidget(container);
 		// const sideBar = this.sideBar();
 		// controlVariablesDom
-		// container.appendChild(controlVariablesDom);
 
 	}
 
@@ -74,12 +73,29 @@ export class propWidgetView extends ViewPane {
 		return div;
 	}
 
-	propWidget() {
+	async propWidget(container: HTMLElement) {
 		const propWidget = document.createElement('prop-widget');
 		propWidget.style.width = "100%"
 		propWidget.style.height = "100%";
 		propWidget.style.background = "red";
 		propWidget.api = api;
+		container.appendChild(propWidget);
+		const waitShadow = () => new Promise(resolve => {
+			const check = () => {
+				if (propWidget.shadowRoot) resolve();
+				else requestAnimationFrame(check);
+			};
+			check();
+		});
+		await waitShadow();
+
+		// 动态加载 CSS
+		const res = await fetch('http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/module/propWidget/browser/PropWidget.build.css');
+		const cssText = await res.text();
+
+		const style = document.createElement('style');
+		style.textContent = cssText;
+		propWidget.shadowRoot.appendChild(style);
 		return propWidget;
 	}
 

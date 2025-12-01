@@ -1,16 +1,16 @@
-import { URI } from '../../../../base/common/uri.js';
-import { SyncDescriptor } from '../../../../platform/instantiation/common/descriptors.js';
-import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
-import { Registry } from '../../../../platform/registry/common/platform.js';
-import { EditorPaneDescriptor, IEditorPaneRegistry } from '../../../browser/editor.js';
-import { IWorkbenchContribution } from '../../../common/contributions.js';
-import { EditorExtensions } from '../../../common/editor.js';
-import { IEditorResolverService, RegisteredEditorPriority } from '../../../services/editor/common/editorResolverService.js';
+import { URI } from '../../../../../../../base/common/uri.js';
+import { SyncDescriptor } from '../../../../../../../platform/instantiation/common/descriptors.js';
+import { IInstantiationService } from '../../../../../../../platform/instantiation/common/instantiation.js';
+import { Registry } from '../../../../../../../platform/registry/common/platform.js';
+import { EditorPaneDescriptor, IEditorPaneRegistry } from '../../../../../../browser/editor.js';
+import { IWorkbenchContribution } from '../../../../../../common/contributions.js';
+import { EditorExtensions } from '../../../../../../common/editor.js';
+import { IEditorResolverService, RegisteredEditorPriority } from '../../../../../../services/editor/common/editorResolverService.js';
 import { VirtualJSXEditorInput } from './CustomEditor/VirtualJSXEditorInput.js';
 import { VirtualJSXEditorPane } from './VirtualJSXEditorPane.js';
-import { initLvglModule } from "../../LVGL/module/maxgraph/lvgl/package/LvglModule.js";
-import { ITextModelService } from '../../../../editor/common/services/resolverService.js';
-import { IModelService } from '../../../../editor/common/services/model.js';
+import { initLvglModule } from "../../lvgl/package/LvglModule.js";
+import { ITextModelService } from '../../../../../../../editor/common/services/resolverService.js';
+import { IModelService } from '../../../../../../../editor/common/services/model.js';
 
 
 

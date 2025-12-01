@@ -1,6 +1,6 @@
-import type { LvglBase } from "./lvgl/package/shapes/lvglBase";
-import type HMiBase from "./hmi/elements/HMiBase";
-import type { Graph } from "./packages/core/src/view/Graph";
+import type { LvglBase } from "./lvgl/package/shapes/lvglBase.js";
+import type HMiBase from "./hmi/elements/HMiBase.js";
+import type { Graph } from "./packages/core/src/view/Graph.js";
 export type LvDisplayT = any;
 
 export type LvScreen = {
@@ -815,4 +815,11 @@ declare var ALLOC_NONE: number;
 
 
 
+
+
+export interface preDropWidgetInfoType {
+	width: number;
+	height: number;
+	type: string;
+}
 

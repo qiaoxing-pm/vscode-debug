@@ -1,5 +1,6 @@
 import { IListRenderer } from '../../../../../../base/browser/ui/list/list.js';
-
+import { WidgetDragManager } from '../../maxgraph/vscodeEditor/browser/util.js';
+import { screenStore, widgetProps } from '../../maxgraph/lvgl/store/index.js';
 export interface widgetHtmlElement {
 	icon: HTMLElement;
 	label: HTMLElement;
@@ -11,6 +12,11 @@ export interface widgetHtmlElement {
 export interface widgetListNodeImg {
 	label: string;
 	imgUrl: string;
+	defaultSize: {
+		w: number;
+		h: number;
+	};
+	sort: number;
 }
 
 export interface widgetListNode {
@@ -71,6 +77,7 @@ export class CollapsibleListRenderer implements IListRenderer<widgetListGroup, a
 		return { icon, label, img, parent: container };
 	}
 	renderElement(element: widgetListGroup | widgetListNode, index: number, templateData: widgetHtmlElement) {
+
 		if ("imgData" in element) {
 			this.initImg(element as unknown as widgetListNode, templateData);
 		} else {
@@ -107,10 +114,26 @@ export class CollapsibleListRenderer implements IListRenderer<widgetListGroup, a
 		img.innerHTML = '';
 		img.className = "img-wrapper";
 		const imgRef = [];
+		const widgetDragmanager = new WidgetDragManager({
+			screenStore: screenStore,
+			isHmi: false,
+		});
 		element.imgData.forEach((item) => {
 			const imgWrapper = document.createElement('div');
 			const imgWrapperContent = document.createElement('img');
 			const imgWrapperTitle = document.createElement('div');
+
+
+			widgetDragmanager.createDragAction(imgWrapper, {
+				defaultSize: {
+					w: item.defaultSize.w,
+					h: item.defaultSize.h,
+				},
+				name: item.label
+			})
+
+
+
 			imgWrapper.className = "img-item-wrapper";
 			imgWrapperTitle.className = 'img-item-title';
 			imgWrapperContent.className = 'img-item-content';

@@ -1,8 +1,8 @@
-import { URI } from '../../../../../base/common/uri.js';
-import { ITextModel } from '../../../../../editor/common/model.js';
-import { IModelService } from '../../../../../editor/common/services/model.js';
-import { ITextModelService } from '../../../../../editor/common/services/resolverService.js';
-import { EditorInput } from '../../../../common/editor/editorInput.js';
+import { URI } from '../../../../../../../../base/common/uri.js';
+import { ITextModel } from '../../../../../../../../editor/common/model.js';
+import { IModelService } from '../../../../../../../../editor/common/services/model.js';
+import { ITextModelService } from '../../../../../../../../editor/common/services/resolverService.js';
+import { EditorInput } from '../../../../../../../common/editor/editorInput.js';
 
 export class VirtualJSXEditorInput extends EditorInput {
 	static readonly ID = 'workbench.editorinputs.virtualJsx';

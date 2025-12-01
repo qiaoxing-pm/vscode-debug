@@ -5,7 +5,7 @@ import { URI } from '../../../../../base/common/uri.js';
 import { IInstantiationService } from '../../../../../platform/instantiation/common/instantiation.js';
 import { IEditorGroupsService } from '../../../../services/editor/common/editorGroupsService.js';
 import { IEditorService } from '../../../../services/editor/common/editorService.js';
-import { VirtualJSXEditorInput } from '../../../jsx/browser/CustomEditor/VirtualJSXEditorInput.js';
+import { VirtualJSXEditorInput } from '../../../LVGL/module/maxgraph/vscodeEditor/browser/CustomEditor/VirtualJSXEditorInput.js';
 import { ExplorerItem } from '../../common/explorerModel.js';
 
 interface IUntypedEditorInput {

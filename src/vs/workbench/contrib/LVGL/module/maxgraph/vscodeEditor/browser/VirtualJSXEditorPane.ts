@@ -1,21 +1,22 @@
-import { IEditorOptions } from '../../../../platform/editor/common/editor.js';
-import { EditorPane } from '../../../browser/parts/editor/editorPane.js';
+import { IEditorOptions } from '../../../../../../../platform/editor/common/editor.js';
+import { EditorPane } from '../../../../../../browser/parts/editor/editorPane.js';
 import { VirtualJSXEditorInput } from './CustomEditor/VirtualJSXEditorInput.js';
-import { IEditorGroup } from '../../../services/editor/common/editorGroupsService.js';
-import { IStorageService } from '../../../../platform/storage/common/storage.js';
-import { IThemeService } from '../../../../platform/theme/common/themeService.js';
-import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
-import { IEditorOpenContext } from '../../../common/editor.js';
+import { IEditorGroup } from '../../../../../../services/editor/common/editorGroupsService.js';
+import { IStorageService } from '../../../../../../../platform/storage/common/storage.js';
+import { IThemeService } from '../../../../../../../platform/theme/common/themeService.js';
+import { ITelemetryService } from '../../../../../../../platform/telemetry/common/telemetry.js';
+import { IEditorOpenContext } from '../../../../../../common/editor.js';
 import { CancellationToken } from 'vscode';
-import { URI } from '../../../../base/common/uri.js';
-import { createNewScreen, initLvglModule } from "../../LVGL/module/maxgraph/lvgl/package/LvglModule.js";
-import createLvglGraph, { switchGraph } from "../../LVGL/module/maxgraph/lvgl/events/createLvglCanvas.js"
-import RpcProvider from "../../LVGL/lib/worker-rpc/lib/RpcProvider.js";
-import { createHMIWidget } from "../../LVGL/module/maxgraph/hmi/testHmi.js";
-import { screenStore, widgetProps } from '../../LVGL/module/maxgraph/lvgl/store/index.js';
-import { IEditorService } from '../../../services/editor/common/editorService.js';
-import api from '../../LVGL/api/index.js';
-import { isPointInRect } from '../../LVGL/util/util.js';
+import { URI } from '../../../../../../../base/common/uri.js';
+import { createNewScreen, initLvglModule } from "../../lvgl/package/LvglModule.js";
+import createLvglGraph, { switchGraph } from "../../lvgl/events/createLvglCanvas.js"
+import RpcProvider from "../../../../lib/worker-rpc/lib/RpcProvider.js";
+import { createHMIWidget } from "../../hmi/testHmi.js";
+import { screenStore, widgetProps } from '../../lvgl/store/index.js';
+import { IEditorService } from '../../../../../../services/editor/common/editorService.js';
+import api from '../../../../api/index.js';
+import { isPointInRect } from '../../../../util/util.js';
+import { WidgetDragManager, widgetListDragEnd } from './util.js';
 
 
 export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
@@ -80,7 +81,6 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 	}
 
 	private onFocusChange(graph) {
-		console.log(screenStore, graph)
 		this.container.focus();
 		if (!screenStore.curScreen || screenStore.curScreen.id === graph.screen.id) {
 			return;
@@ -100,14 +100,12 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 
 	private init(resourceString: string) {
 		const curScreenAndDom = this.renderCache.get(resourceString);
-		console.log(curScreenAndDom, this.renderCache)
 		this.editorService.onDidActiveEditorChange(() => {
 			const active = this.editorService.activeEditor;
 
 			if (active?.resource?.toString() === resourceString && curScreenAndDom?.graph) {
 				setTimeout(() => {
 					this.onFocusChange(curScreenAndDom?.graph);
-					console.log("asfdsfgsdgf", curScreenAndDom)
 				}, 100)
 			}
 
@@ -116,11 +114,7 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 
 	private renderUI(content: string, resource: URI) {
 		this.container.innerHTML = '';
-		api.eventBus.on("widgetList_drag_end", (e) => {
-			const rect = this.container.getBoundingClientRect();
-			// console.log(e, rect);
-			console.log(isPointInRect(rect, e))
-		})
+
 
 		const screen = createNewScreen(
 			resource.toString(),
@@ -168,6 +162,5 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 		this.onFocusChange(graph);
 		screenStore.curScreen = graph.screen;
 		screenStore.curGraph = graph;
-
 	}
 }
