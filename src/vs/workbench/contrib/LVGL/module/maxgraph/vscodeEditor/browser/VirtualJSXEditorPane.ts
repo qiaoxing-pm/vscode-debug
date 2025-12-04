@@ -8,9 +8,11 @@ import { ITelemetryService } from '../../../../../../../platform/telemetry/commo
 import { IEditorOpenContext } from '../../../../../../common/editor.js';
 import { CancellationToken } from 'vscode';
 import { URI } from '../../../../../../../base/common/uri.js';
-import { createNewScreen, initLvglModule } from "../../lvgl/package/LvglModule.js";
+import { DomScrollableElement } from '../../../../../../../base/browser/ui/scrollbar/scrollableElement.js';
+import { createNewScreen } from "../../lvgl/package/LvglModule.js";
 import createLvglGraph, { switchGraph } from "../../lvgl/events/createLvglCanvas.js"
 import RpcProvider from "../../../../lib/worker-rpc/lib/RpcProvider.js";
+import { ScrollbarVisibility } from '../../../../../../../base/common/scrollable.js';
 import { createHMIWidget } from "../../hmi/testHmi.js";
 import { screenStore, widgetProps } from '../../lvgl/store/index.js';
 import { IEditorService } from '../../../../../../services/editor/common/editorService.js';
@@ -24,6 +26,7 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 	private container!: HTMLElement;
 	private renderCache = new Map<string, { containerWrapper: HTMLElement; graph: any }>();
 	private editorService!: IEditorService;
+	private _scrollElement: DomScrollableElement | undefined;
 
 	constructor(
 		group: IEditorGroup,
@@ -123,6 +126,7 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 		)
 		const containerWrapper = document.createElement('div');
 		containerWrapper.style.height = "100%";
+		containerWrapper.style.width = "100%";
 		containerWrapper.style.position = 'relative';
 
 		const containerDiv = document.createElement('div');
@@ -162,5 +166,14 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 		this.onFocusChange(graph);
 		screenStore.curScreen = graph.screen;
 		screenStore.curGraph = graph;
+
+		this._scrollElement = new DomScrollableElement(containerWrapper, {
+			alwaysConsumeMouseWheel: true,
+			horizontal: ScrollbarVisibility.Auto,
+			vertical: ScrollbarVisibility.Auto
+		});
+		const domNode = this._scrollElement.getDomNode();
+		domNode.style.height = "100%";
+		domNode.style.width = "100%";
 	}
 }

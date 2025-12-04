@@ -18,9 +18,12 @@ import { IOpenerService } from "../../../../../../platform/opener/common/opener.
 import { IHoverService } from "../../../../../../platform/hover/browser/hover.js";
 
 import api from '../../../api/index.js';
+import { DomScrollableElement } from '../../../../../../base/browser/ui/scrollbar/scrollableElement.js';
+import { ScrollbarVisibility } from '../../../../../../base/common/scrollable.js';
 
 
 export class propWidgetView extends ViewPane {
+	private _scrollElement: DomScrollableElement | undefined;
 
 	constructor(
 		options: IViewPaneOptions,
@@ -51,12 +54,8 @@ export class propWidgetView extends ViewPane {
 
 
 	protected override renderBody(container: HTMLElement): void {
-		const controlVariablesDom = this.propWidget(container);
-		// const sideBar = this.sideBar();
-		// controlVariablesDom
-
+		this.propWidget(container);
 	}
-
 
 
 	sideBar() {
@@ -74,29 +73,37 @@ export class propWidgetView extends ViewPane {
 	}
 
 	async propWidget(container: HTMLElement) {
-		const propWidget = document.createElement('prop-widget');
-		propWidget.style.width = "100%"
-		propWidget.style.height = "100%";
-		propWidget.style.background = "red";
-		propWidget.api = api;
-		container.appendChild(propWidget);
-		const waitShadow = () => new Promise(resolve => {
-			const check = () => {
-				if (propWidget.shadowRoot) resolve();
-				else requestAnimationFrame(check);
-			};
-			check();
+		container.style.display = "block";      // 防止 flex 布局影响 scroll 计算
+
+		const content = document.createElement("div");
+		content.style.position = "relative";
+		content.style.width = "100%";
+		content.style.height = "100%"; // 关键：用于 scrollElement 布局基线计算
+
+		// 加载你的组件
+		const widget = document.createElement("prop-widget");
+		widget.style.display = "block";
+		widget.style.width = "100%";
+		widget.style.height = "auto";
+
+		content.appendChild(widget);
+
+		this._scrollElement = new DomScrollableElement(content, {
+			alwaysConsumeMouseWheel: true,
+			horizontal: ScrollbarVisibility.Auto,
+			vertical: ScrollbarVisibility.Auto
 		});
-		await waitShadow();
 
-		// 动态加载 CSS
-		const res = await fetch('http://localhost:8080/static/sources/out/vs/workbench/contrib/LVGL/module/propWidget/browser/PropWidget.build.css');
-		const cssText = await res.text();
+		const domNode = this._scrollElement.getDomNode();
+		domNode.style.height = "100%";
+		domNode.style.width = "100%";
 
-		const style = document.createElement('style');
-		style.textContent = cssText;
-		propWidget.shadowRoot.appendChild(style);
-		return propWidget;
+		container.appendChild(domNode);
+		const ro = new ResizeObserver(() => {
+			this._scrollElement?.scanDomNode();
+		})
+		ro.observe(widget);
+		this._scrollElement?.scanDomNode();
 	}
 
 
@@ -120,7 +127,7 @@ export class propWidgetView extends ViewPane {
 
 	override layoutBody(height: number, width: number): void {
 		super.layoutBody(height, width);
-
+		this._scrollElement?.scanDomNode();
 	}
 
 }

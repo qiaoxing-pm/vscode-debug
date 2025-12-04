@@ -13,6 +13,8 @@ export type CodeWindow = Window & typeof globalThis & {
 	readonly vscodeWindowId: number;
 };
 
+
+
 /**
  * 确保窗口类型函数
  * @param targetWindow
