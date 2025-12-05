@@ -12,6 +12,7 @@ export function useUndo(graph: Graph, undoManager: UndoManager): void {
 	const undolistener = function (sender: any, evt: EventObject) {
 		// todo other
 		undoManager.undoableEditHappened(evt.getProperty('edit'));
+		graph.fireEvent(new EventObject("graphChange", { evt }));
 	};
 	const redolistener = function (sender: any, evt: EventObject) {
 		// todo other

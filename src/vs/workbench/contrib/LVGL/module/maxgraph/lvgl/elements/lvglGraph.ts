@@ -80,7 +80,7 @@ class LvglGraph extends Graph {
 	}
 
 	exportXML(fileName?: string) {
-		exportXML(this, this.screen, fileName);
+		return exportXML(this, this.screen, fileName);
 	}
 }
 

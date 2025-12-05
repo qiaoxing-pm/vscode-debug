@@ -21,6 +21,8 @@ import type LvglGraph from "../lvgl/elements/lvglGraph.js";
 import { exportProjectXML } from "../lvgl/tools/projectXml.js";
 import { compileProject, downloadCompiledFile } from "../lvgl/bottomtab/func.js";
 import type { LvScreen, ImportConfig } from "../type.js"
+import { EventObject } from '../../../api/MaxGraphModule/lib/lib/esm/index.js';
+import { InternalEvent } from '../../../api/MaxGraphModule/lib/lib/esm/index.js';
 
 class Editor {
 	private static first = true;
@@ -126,6 +128,8 @@ class Editor {
 
 	undo(graph: LvglGraph) {
 		graph.undoManager.undo();
+		// EventObject InternalEvent
+		graph.fireEvent(new EventObject(InternalEvent.UNDO, {}))
 	}
 	redo(graph: LvglGraph) {
 		graph.undoManager.redo();

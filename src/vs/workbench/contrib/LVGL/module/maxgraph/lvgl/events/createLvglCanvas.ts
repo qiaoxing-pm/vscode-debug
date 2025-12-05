@@ -90,7 +90,6 @@ export function switchGraph(curGraph: LvglGraph, newGraph: LvglGraph) {
 	if (curGraph === newGraph) {
 		return null;
 	}
-	console.log(curGraph.screen, newGraph.screen)
 	switchScreen(curGraph.screen, newGraph.screen);
 	Module.ctx = newGraph.screen.canvas.getContext("2d") as CanvasRenderingContext2D;
 	const selectionModel = curGraph.getSelectionModel();

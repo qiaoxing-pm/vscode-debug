@@ -19,6 +19,11 @@ import { IEditorService } from '../../../../../../services/editor/common/editorS
 import api from '../../../../api/index.js';
 import { isPointInRect } from '../../../../util/util.js';
 import { WidgetDragManager, widgetListDragEnd } from './util.js';
+import SelectionChange from '../../packages/core/src/view/undoable_changes/SelectionChange.js';
+import Editor from '../../Editor/Editor.js';
+import { ITextModel } from '../../../../../../../editor/common/model.js';
+import { ICommandService } from '../../../../../../../platform/commands/common/commands.js';
+
 
 
 export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
@@ -27,6 +32,7 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 	private renderCache = new Map<string, { containerWrapper: HTMLElement; graph: any }>();
 	private editorService!: IEditorService;
 	private _scrollElement: DomScrollableElement | undefined;
+	private isActiveEditor: string = '';
 
 	constructor(
 		group: IEditorGroup,
@@ -34,6 +40,7 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 		@IThemeService themeService: IThemeService,
 		@IStorageService storageService: IStorageService,
 		@IEditorService editorService: IEditorService,
+		@ICommandService private readonly commandService: ICommandService
 	) {
 
 		super(VirtualJSXEditorPane.ID, group, telemetryService, themeService, storageService);
@@ -65,13 +72,14 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 	): Promise<void> {
 
 		await super.setInput(input, options, context, token);
-		const { content, resource } = await input.resolve();
+		const { content, resource, model } = await input.resolve();
 		this.init(resource.toString());
+		// this.input.getModel().onDidChangeContent
 
 		if (this.renderCache.has(resource.toString())) {
 			this.showCached(resource.toString());
 		} else {
-			this.renderUI(content, resource);
+			this.renderUI(content, resource, model);
 		}
 	}
 
@@ -96,7 +104,6 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 		}
 		screenStore.curScreen = graph.screen;
 		screenStore.curGraph = graph;
-		// rpcProvider.rpc('updateHirerachyTree');
 		widgetProps.update++;
 	}
 
@@ -115,12 +122,13 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 		});
 	}
 
-	private renderUI(content: string, resource: URI) {
+	private renderUI(content: string, resource: URI, model: ITextModel) {
 		this.container.innerHTML = '';
 
+		this.isActiveEditor = resource.toString();
 
 		const screen = createNewScreen(
-			resource.toString(),
+			this.isActiveEditor,
 			800,
 			600,
 		)
@@ -128,6 +136,8 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 		containerWrapper.style.height = "100%";
 		containerWrapper.style.width = "100%";
 		containerWrapper.style.position = 'relative';
+		containerWrapper.style.overflow = 'hidden';
+
 
 		const containerDiv = document.createElement('div');
 		containerDiv.style.width = "800px";
@@ -140,7 +150,18 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 		canvas.width = 800;
 		containerWrapper.appendChild(containerDiv);
 		containerWrapper.appendChild(canvas);
-		this.container.appendChild(containerWrapper);
+
+
+		this._scrollElement = new DomScrollableElement(containerWrapper, {
+			alwaysConsumeMouseWheel: true,
+			horizontal: ScrollbarVisibility.Auto,
+			vertical: ScrollbarVisibility.Auto
+		});
+		const domNode = this._scrollElement.getDomNode();
+		domNode.style.height = "100%";
+		domNode.style.width = "100%";
+
+		this.container.appendChild(domNode);
 		const rpcProvider: any = new RpcProvider((m, t) =>
 			window.postMessage(m, "*", t)
 		);
@@ -154,26 +175,80 @@ export class VirtualJSXEditorPane extends EditorPane<VirtualJSXEditorInput> {
 				this.onFocusChange(graph);
 			},
 			mouseMove(sender, me) {
-
 			},
 			mouseUp: () => {
-
 			},
 		})
-		this.renderCache.set(resource.toString(), {
+
+
+		this.renderCache.set(this.isActiveEditor, {
 			containerWrapper, graph
-		})
+		});
+
 		this.onFocusChange(graph);
 		screenStore.curScreen = graph.screen;
 		screenStore.curGraph = graph;
 
-		this._scrollElement = new DomScrollableElement(containerWrapper, {
-			alwaysConsumeMouseWheel: true,
-			horizontal: ScrollbarVisibility.Auto,
-			vertical: ScrollbarVisibility.Auto
+
+		// 监听graph被修改后，将修改后的数据写入 pane后，
+		graph.addListener("graphChange", (sender, e) => {
+			if (e.properties.evt.properties.edit.changes.length === 1) {
+				const updateEvent = e.properties.evt.properties.edit.changes[0];
+				// 避免选择变化引起的大量保存
+				if (updateEvent instanceof SelectionChange) {
+					return;
+				}
+			}
+			this.input?.setPendingContent(graph.exportXML());
 		});
-		const domNode = this._scrollElement.getDomNode();
-		domNode.style.height = "100%";
-		domNode.style.width = "100%";
+
+		// 劫持vscode的撤销和恢复。
+		this.commandService.onWillExecuteCommand(e => {
+			if (!this.input) return;
+
+			if (!this.isActiveEditor === resource.toString()) return;
+
+			if (e.commandId === 'undo') {
+				Editor.undo(graph);
+				e.preventDefault?.();  // 阻止 VSCode 默认行为（可选）
+			}
+
+			if (e.commandId === 'redo') {
+				Editor.redo(graph);
+				e.preventDefault?.();
+			}
+		});
+
+
+
+
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

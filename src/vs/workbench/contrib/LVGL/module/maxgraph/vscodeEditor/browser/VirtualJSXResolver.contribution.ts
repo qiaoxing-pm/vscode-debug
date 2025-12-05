@@ -71,8 +71,8 @@ export class VirtualJSXEditorContribution implements IWorkbenchContribution {
 			// 如果 model 不存在，创建一个
 			const reference = await this.textModelService.createModelReference(resource);
 			model = reference.object.textEditorModel;
+			reference.dispose();
 		}
-
 		return {
 			content: model.getValue(), // 文件原始文本
 			title: resource.path.split('/').pop() as string,
